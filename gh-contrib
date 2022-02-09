@@ -73,10 +73,15 @@ char() {
   fi
 }
 
+space=" "
+if [ -t 1 ] && [ "$(tput cols)" -lt 102 ]; then
+  space=""
+fi
+
 for d in $(seq 0 6); do
   for w in $(seq 0 51); do
     hex="${days[w*7+d]}"
-    printf "\e[38;2;%d;%d;%dm%s\e[m " "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"
+    printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")" "$space"
   done
   printf "\n"
 done
