@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
+usage() {
+  echo "Usage: gh contrib [--style <style>]"
+}
+
 days=( $(gh api graphql -f query='{
   viewer {
     contributionsCollection {
@@ -16,9 +20,22 @@ days=( $(gh api graphql -f query='{
 }' --cache 24h --jq '..|.color?' | grep .) )
  
 style=block
-if [ "$1" = "-s" ] || [ "$1" = "--style" ]; then
-  style="$2"
-fi
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -s|--style)
+      style="$2"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      usage >&2
+      exit 1
+      ;;
+  esac
+done
 
 case "$style" in
 block)
