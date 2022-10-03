@@ -19,7 +19,7 @@ days=( $(gh api graphql -f query='{
   }
 }' --cache 24h --jq '..|.color?' | grep .) )
  
-style=block
+style=contrast
 while [ $# -gt 0 ]; do
   case "$1" in
     -s|--style)
@@ -59,6 +59,9 @@ diamond)
 plus)
   block_full="✚"
   block_empty="•";;
+contrast)
+  block_full="█"
+  block_empty="░";;
 *)
   echo "error: style '$style' not recognized" >&2
   echo "available styles: block square dot shade fisheye diamond plus" >&2
@@ -73,10 +76,10 @@ char() {
   fi
 }
 
-space=" "
-if [ -t 1 ] && [ "$(tput cols)" -lt 102 ]; then
-  space=""
-fi
+#space=" "
+#if [ -t 1 ] && [ "$(tput cols)" -lt 102 ]; then
+#  space=""
+#fi
 
 for d in $(seq 0 6); do
   for w in $(seq 0 51); do
