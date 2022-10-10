@@ -20,11 +20,37 @@ days=( $(gh api graphql -f query='{
 }' --cache 24h --jq '..|.color?' | grep .) )
  
 style=contrast
+double=" "
+space=""
+hsep="\n"
 while [ $# -gt 0 ]; do
   case "$1" in
     -s|--style)
       style="$2"
       shift 2
+      ;;
+    -v|--vertical)
+      vsep=" "
+      shift 1
+      ;;
+    -h|--horizontal)
+      hsep="\n\n"
+      shift 1
+      ;;
+    -vh|-hv)
+      vsep=" "
+      hsep="\n\n"
+      shift 1
+      ;;
+    -svh|-shv|-vsh|-hsv|-vhs|-hvs)
+      vsep=" "
+      hsep="\n\n"
+      style="$2"
+      shift 2
+      ;;
+    -d|--double)
+    double=""
+      shift 1
       ;;
     -h|--help)
       usage
@@ -81,18 +107,30 @@ if [ -t 1 ] && [ "$(tput cols)" -lt 102 ]; then
  for d in $(seq 0 6); do
    for w in $(seq 0 51); do
      hex="${days[w*7+d]}"
-     printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")" "$(char "$hex")"
+     printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"
    done
-   printf "\n"
+   printf "$hsep"
  done
  printf "\n"
 else
- for d in $(seq 0 6); do
-   for w in $(seq 0 51); do
-     hex="${days[w*7+d]}"
-     printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")" 
-   done
-   printf "\n"
- done
- printf "\n"
+ if [ -z "$vsep" ]; then
+  for d in $(seq 0 6); do
+    for w in $(seq 0 51); do
+      hex="${days[w*7+d]}"
+      printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"
+      printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"
+    done
+    printf "$hsep"
+  done
+  printf "\n"
+ else
+  for d in $(seq 0 6); do
+    for w in $(seq 0 51); do
+      hex="${days[w*7+d]}"
+      printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")" "$vsep"
+    done
+    printf "$hsep"
+  done
+  printf "\n"
+ fi 
 fi
