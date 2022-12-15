@@ -41,6 +41,14 @@ while [ $# -gt 0 ]; do
   case "$1" in
     -s|--style)
       style="$2"
+      [ -z $2 ] && h_styles >&2 && exit 1
+      shift 2
+      ;;
+    -w|--weeks)
+      weeks="$2"
+      let weeks_min=weeks_max-weeks
+      #echo $weeks_min
+      [ -z $2 ] && echo "error" >&2 && exit 1
       shift 2
       ;;
     -c|--vertical)
