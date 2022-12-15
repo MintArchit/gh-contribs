@@ -18,7 +18,11 @@ days=( $(gh api graphql -f query='{
     }
   }
 }' --cache 24h --jq '..|.color?' | grep .) )
- 
+
+# variables defaults
+weeks=0
+weeks_max=52
+weeks_min=0
 style=contrast
 double=" "
 space=""
@@ -105,9 +109,9 @@ char() {
 
 if [ -t 1 ] && [ "$(tput cols)" -lt 102 ]; then
  for d in $(seq 0 6); do
-   for w in $(seq 0 51); do
+   for w in $(seq $weeks_min $weeks_max); do
      hex="${days[w*7+d]}"
-     printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"
+     [ ! -z "$hex" ] && printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"
    done
    printf "$hsep"
  done
@@ -115,19 +119,20 @@ if [ -t 1 ] && [ "$(tput cols)" -lt 102 ]; then
 else
  if [ -z "$vsep" ]; then
   for d in $(seq 0 6); do
-    for w in $(seq 0 51); do
+    for w in $(seq $weeks_min $weeks_max); do
       hex="${days[w*7+d]}"
-      printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"
-      printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"
+      #printf $hex
+      [ ! -z "$hex" ] && printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"
+      [ ! -z "$hex" ] && printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"
     done
     printf "$hsep"
   done
   printf "\n"
  else
   for d in $(seq 0 6); do
-    for w in $(seq 0 51); do
+    for w in $(seq $weeks_min $weeks_max); do
       hex="${days[w*7+d]}"
-      printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")" "$vsep"
+      [ ! -z "$hex" ] && printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")" "$vsep"
     done
     printf "$hsep"
   done
