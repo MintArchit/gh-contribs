@@ -2,8 +2,13 @@
 
 Render your contribution graph to the terminal.
 
+connects directly via github api / no third party service is used
 ```
-$ gh extension install mislav/gh-contrib
+$ git clone https://github.com/mintarchit/gh-contrib
+
+$ cd gh-contrib
+
+$ gh extension install .
 
 $ gh contrib
 ```
