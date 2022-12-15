@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
 set -e
 
-usage() {
-  echo "Usage: gh contrib [--style <style>]"
+h_usage() {
+  printf "Usage: gh contrib -s <style> -c -l -w <weeks>\n\n"
+}
+
+h_options() {
+  printf "Options:\n\t-h | --help\n\t-s | --style <style>\n\t-w | --weeks <weeks>\n\t-c | --vertical spacing\n\t-l | --horizontal spacing\n\n"
+}
+
+h_styles() {
+  printf "Styles:\nblock square dot shade fisheye diamond plus contrast\n"
 }
 
 days=( $(gh api graphql -f query='{
@@ -27,21 +35,23 @@ style=contrast
 double=" "
 space=""
 hsep="\n"
+
+# parse options
 while [ $# -gt 0 ]; do
   case "$1" in
     -s|--style)
       style="$2"
       shift 2
       ;;
-    -v|--vertical)
+    -c|--vertical)
       vsep=" "
       shift 1
       ;;
-    -h|--horizontal)
+    -l|--horizontal)
       hsep="\n\n"
       shift 1
       ;;
-    -vh|-hv)
+    -cl|-lc)
       vsep=" "
       hsep="\n\n"
       shift 1
@@ -57,16 +67,19 @@ while [ $# -gt 0 ]; do
       shift 1
       ;;
     -h|--help)
-      usage
+      h_usage >&2
+      h_options >&2
+      h_styles >&2
       exit 0
       ;;
     *)
-      usage >&2
+      h_usage >&2
       exit 1
       ;;
   esac
 done
 
+# parse style
 case "$style" in
 block)
   block_full="█"
@@ -94,7 +107,7 @@ contrast)
   block_empty="░";;
 *)
   echo "error: style '$style' not recognized" >&2
-  echo "available styles: block square dot shade fisheye diamond plus" >&2
+  h_styles >&2
   exit 1;;
 esac
 
