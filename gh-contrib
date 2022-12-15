@@ -32,8 +32,8 @@ weeks=0
 weeks_max=52
 weeks_min=0
 style=contrast
-double=" "
-space=""
+nodouble=0
+vsep=""
 hsep="\n"
 
 # parse options
@@ -56,14 +56,24 @@ while [ $# -gt 0 ]; do
       hsep="\n\n"
       shift 1
       ;;
-    -svh|-shv|-vsh|-hsv|-vhs|-hvs)
-      vsep=" "
-      hsep="\n\n"
-      style="$2"
-      shift 2
-      ;;
-    -d|--double)
-    double=""
+    #-sc|-cs)
+      #vsep=" "
+      #style="$2"
+      #shift 2
+      #;;
+    #-sl|-ls)
+      #hsep="\n\n"
+      #style="$2"
+      #shift 2
+      #;;
+    #-scl|-slc|-csl|-lsc|-cls|-lcs)
+      #vsep=" "
+      #hsep="\n\n"
+      #style="$2"
+      #shift 2
+      #;;
+    -d|--nodouble)
+    nodouble=1
       shift 1
       ;;
     -h|--help)
@@ -120,7 +130,10 @@ char() {
 }
 
 
-if [ -t 1 ] && [ "$(tput cols)" -lt 102 ]; then
+if [ -t 1 ] && [ "$(tput cols)" -lt 102 ] || [ $nodouble -eq 1 ]; then
+ if [ ! -z "$vsep" ]; then
+	 echo "Terminal too thin, (-c --vertical) ignored"
+ fi
  for d in $(seq 0 6); do
    for w in $(seq $weeks_min $weeks_max); do
      hex="${days[w*7+d]}"
