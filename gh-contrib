@@ -136,7 +136,8 @@ days=( $(gh api graphql -f query='{
       }
     }
   }
-}' --cache 24h --jq '..|.color?' | grep .) )
+}' --jq '..|.color?' | grep .) )
+#}' --cache 24h --jq '..|.color?' | grep .) )
 
 if [ -t 1 ] && [ "$(tput cols)" -lt 102 ] || [ $nodouble -eq 1 ]; then
  if [ ! -z "$vsep" ]; then
