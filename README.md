@@ -4,11 +4,7 @@ Render your contribution graph to the terminal.
 
 connects directly via github api / no third party service is used
 ```
-$ git clone https://github.com/mintarchit/gh-contrib
-
-$ cd gh-contrib
-
-$ gh extension install .
+$ gh extension install mintarchit/gh-contrib
 
 $ gh contrib
 ```
