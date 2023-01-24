@@ -64,7 +64,7 @@ $ gh contribs
 
 ## Limitations
 
-Resizing Terminal font-size can mess up temporarily the display of old graph outputs
+Resizing Terminal font-size can temporarily mess up the display of old graph outputs
 
 ## Contributing
 
