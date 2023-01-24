@@ -6,40 +6,46 @@ Render your contribution graph to the terminal.
 
 connects directly via github api / no third party service is used
 
-# sparkles Features 
+## ✨ Features 
 
-- [X] More Styles
-- [X] More Options
-- [ ] add schemes
+- [X] New Default Style Contrast
+- [X] specify weeks
+- [X] improved help
+- [X] more control over ouput with gap options
+- [ ] add optional configuration
+- [ ] add color schemes
+- [ ] make styles open to user defined character
+- [ ] add optional day labels
 
-# package Installation
+## 📦 Installation
  
-### install
+#### install
 
 ```
 $ gh extension install mintarchit/gh-contribs
 ```
 
-### list installed extensions
+#### list installed extensions
 
 ```
 $ gh extension list
 ```
 
-### uninstall
+#### uninstall
 
 ```
 $ gh extension remove gh-contribs
 ```
 
-# zap Usage
+## ⚡️ Usage
 
 ```
 $ gh contribs
 ```
 
-# art Styles
+## Styles
 
+- contrast (default)
 - block
 - square
 - dot
@@ -47,16 +53,19 @@ $ gh contribs
 - fisheye
 - diamond
 - plus
-- contrast (default)
 
-# Contributing
+## Limitations
+
+Resizing Terminal font-size can mess up temporarily the display of old graph outputs
+
+## Contributing
 
 All contributions are greatly appreciated!
 
 If you have a suggestion that would make gh-contribs better, 
 please fork the repo and create a pull request or open an issue.
 
-# Acknowledgements
+## Acknowledgements
 
 Forked from [Mizlav/gh-contrib]
 This Fork is currently maintained by MintArchit
