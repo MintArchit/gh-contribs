@@ -1,10 +1,12 @@
-# gh contribs
+# gh-contribs
 
 Render your contribution graph to the terminal.
 
 <img width="745" alt="Screenshot" src="https://user-images.githubusercontent.com/887/153284410-74925ad9-0e5a-441c-b4cb-5cbeced0630d.png">
 
 connects directly via github api / no third party service is used
+
+## Contents
 
 ## ✨ Features 
 
@@ -71,8 +73,8 @@ All contributions are greatly appreciated!
 If you have a suggestion that would make gh-contribs better, 
 please fork the repo and create a pull request or open an issue.
 
-## Acknowledgements
+## Credits
 
-gh-contrib**s** is maintained by MintArchit &
+gh-contribs is maintained by [MintArchit](https://github.com/MintArchit) &
 
-Forked from [Mizlav/gh-contrib]
+Forked from [Mizlav](https://github.com/mislav)/[gh-contrib](https://github.com/mislav/gh-contrib)
