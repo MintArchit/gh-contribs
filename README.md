@@ -31,6 +31,12 @@ $ gh extension install mintarchit/gh-contribs
 $ gh extension list
 ```
 
+#### upgrade
+
+```
+$ gh extensions upgrade gh-contribs
+```
+
 #### uninstall
 
 ```
@@ -67,5 +73,6 @@ please fork the repo and create a pull request or open an issue.
 
 ## Acknowledgements
 
+gh-contrib**s** is maintained by MintArchit &
+
 Forked from [Mizlav/gh-contrib]
-This Fork is currently maintained by MintArchit
