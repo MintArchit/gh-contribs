@@ -10,10 +10,11 @@ connects directly via github api / no third party service is used
 
 ## ✨ Features 
 
-- [X] New Default Style Contrast
+- [X] Default Style Contrast
 - [X] Specify weeks
+- [X] Automated Sizing (WIP)
 - [X] Improved help
-- [X] More control over ouput with gap options
+- [X] More control over ouput with gap arguments
 - [X] Day labels (NEW)
 
 #### todo
