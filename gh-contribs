@@ -59,7 +59,7 @@ main()
     fi
   fi
 
-  printf "weeks: $weeks, w-min: $weeks_min, w-max: $weeks_max \n"
+  #printf "weeks: $weeks, w-min: $weeks_min, w-max: $weeks_max \n"
 }
 
 parse_args() 
