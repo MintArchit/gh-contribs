@@ -18,7 +18,7 @@ connects directly via github api / no third party service is used
 - [X] Day labels (NEW)
 
 <details>
-	<summary>**Todo**</summary>
+	<summary><h4>Todo</h4></summary>
 	
 	- [ ] Orientation Portrait/Landscape 
 	- [ ] Configuration file
@@ -35,7 +35,7 @@ $ gh extension install mintarchit/gh-contribs
 ```
 
 <details>
-	<summary>**Manage Installation**</summary>
+	<summary><h4>Manage Installation</h4></summary>
 
 #### list installed extensions
 
