@@ -25,6 +25,7 @@ main()
 
   # local variables
   local width="$(calculate_output $weeks)"
+  # at the moment not considering labels or nodoubles
   
   # gh api
   days=( $(gh api graphql -f query='{
@@ -95,7 +96,7 @@ parse_args()
         shift 1;;
       -h|--help)
         h_usage >&2
-        h_options >&2
+        h_args >&2
         h_styles >&2
         exit 0;;
       *)
@@ -177,7 +178,7 @@ char()
 # help msgs
 h_usage() 
 {
-  printf "Usage: gh contribs -s <style> -w <weeks> -x -y -n -h\n\n"
+  printf "Usage: gh contribs [-h] [-s <style>] [-w <weeks>] [-x] [-y] [-n] [-l]\n\n"
   return 0
 }
 
@@ -193,9 +194,10 @@ h_warning()
   return 0
 }
 
-h_options() 
+h_args() 
 {
-  printf "Options:\n\t-h | --help\n\t-s | --style <style>\n\t-w | --weeks <weeks>\n\t-x | --xgap\n\t-y | --ygap\n\n-n | --no-doubles\n\n"
+  printf "Possible Arguments:\n\t-h | --help\n\t-s | --style <style>\n\t-w | --weeks <weeks>\n\t-x | --xgap\n\t-y | --ygap\n\t-n | --no-doubles\n\t-l | --labels\n"
+  printf "\n"
   return 0
 }
 
