@@ -18,7 +18,7 @@ connects directly via github api / no third party service is used
 - [X] Day labels (NEW)
 
 <details>
-	<summary>#### todo</summary>
+####<summary> todo</summary>
 	
 	- [ ] Orientation Portrait/Landscape 
 	- [ ] Configuration file
