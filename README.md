@@ -11,13 +11,18 @@ connects directly via github api / no third party service is used
 ## ✨ Features 
 
 - [X] New Default Style Contrast
-- [X] specify weeks
-- [X] improved help
-- [X] more control over ouput with gap options
-- [ ] add optional configuration
-- [ ] add color schemes
-- [ ] make styles open to user defined character
-- [ ] add optional day labels
+- [X] Specify weeks
+- [X] Improved help
+- [X] More control over ouput with gap options
+- [X] Day labels (NEW)
+
+#### todo
+
+*\# add optional...*
+- [ ] Orientation Portrait/Landscape 
+- [ ] Configuration file
+- [ ] Color schemes
+- [ ] User defined characters(styles)
 
 ## 📦 Installation
  
@@ -49,6 +54,12 @@ $ gh extension remove gh-contribs
 
 ```
 $ gh contribs
+```
+
+#### display help with a list of all possible arguments
+
+```
+$ gh contribs -h		#or gh contribs --help
 ```
 
 ## Styles
