@@ -20,10 +20,11 @@ connects directly via github api / no third party service is used
 <details>
 	<summary><h4>Todo</h4></summary>
 	
-	- [ ] Orientation Portrait/Landscape 
-	- [ ] Configuration file
-	- [ ] Color schemes
-	- [ ] User defined characters(styles)
+- [ ] Orientation Portrait/Landscape 
+- [ ] Configuration file
+- [ ] Color schemes
+- [ ] User defined characters(styles)
+
 </details>
 
 ## 📦 Installation
