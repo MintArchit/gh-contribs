@@ -17,21 +17,25 @@ connects directly via github api / no third party service is used
 - [X] More control over ouput with gap arguments
 - [X] Day labels (NEW)
 
-#### todo
-
-*\# add optional...*
-- [ ] Orientation Portrait/Landscape 
-- [ ] Configuration file
-- [ ] Color schemes
-- [ ] User defined characters(styles)
+<details>
+	<summary>#### todo</summary>
+	
+	- [ ] Orientation Portrait/Landscape 
+	- [ ] Configuration file
+	- [ ] Color schemes
+	- [ ] User defined characters(styles)
+</details>
 
 ## 📦 Installation
  
-#### install
+### install
 
 ```
 $ gh extension install mintarchit/gh-contribs
 ```
+
+<details>
+<summary>### manage Installation</summary>
 
 #### list installed extensions
 
@@ -50,6 +54,7 @@ $ gh extensions upgrade gh-contribs
 ```
 $ gh extension remove gh-contribs
 ```
+</details>
 
 ## ⚡️ Usage
 
