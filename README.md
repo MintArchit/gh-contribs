@@ -66,7 +66,22 @@ $ gh contribs
 #### display help with a list of all possible arguments
 
 ```
-$ gh contribs -h		#or gh contribs --help
+$ gh contribs --help
+
+Usage: gh contribs [-h] [-s <style>] [-w <weeks>] [-x] [-y] [-n] [-l]
+
+Possible Arguments:
+        -h | --help
+        -s | --style <style>
+        -w | --weeks <weeks>
+        -x | --xgap
+        -y | --ygap
+        -n | --no-doubles
+        -l | --labels
+
+Styles:
+block square dot shade fisheye diamond plus contrast
+
 ```
 
 ## Styles

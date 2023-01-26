@@ -175,7 +175,7 @@ char()
   return 0
 }
 
-# help msgs
+# msgs
 h_usage() 
 {
   printf "Usage: gh contribs [-h] [-s <style>] [-w <weeks>] [-x] [-y] [-n] [-l]\n\n"
@@ -196,8 +196,16 @@ h_warning()
 
 h_args() 
 {
-  printf "Possible Arguments:\n\t-h | --help\n\t-s | --style <style>\n\t-w | --weeks <weeks>\n\t-x | --xgap\n\t-y | --ygap\n\t-n | --no-doubles\n\t-l | --labels\n"
-  printf "\n"
+  printf "Arguments:
+
+  -h | --help             Displays this help.
+  -s | --style <style>    Change Character
+  -w | --weeks <weeks>    Set range of weeks to be displayed
+  -x | --xgap             Put a Gap between each Column
+  -y | --ygap             Put a Gap between each Row
+  -n | --no-doubles       Disable Automatic Char Doubling
+  -l | --labels           Enable Labels
+  \n"
   return 0
 }
 
