@@ -106,8 +106,12 @@ All contributions are greatly appreciated!
 If you have a suggestion that would make gh-contribs better, 
 please fork the repo and create a pull request or open an issue.
 
+See file [CONTRIBUTION.md](https://github.com/MintArchit/gh-contribs/CONTRIBUTION.md)
+
 ## Credits
 
-gh-contribs is maintained by [MintArchit](https://github.com/MintArchit) &
+gh-contribs is currently maintained by [MintArchit](https://github.com/MintArchit)
 
 Forked from [Mizlav](https://github.com/mislav)/[gh-contrib](https://github.com/mislav/gh-contrib)
+
+See file [CONTRIBUTORS](https://github.com/MintArchit/gh-contribs/CONTRIBUTORS)
