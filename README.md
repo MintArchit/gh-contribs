@@ -15,15 +15,17 @@ connects directly via github api / no third party service is used
 - [X] Automated Sizing (WIP)
 - [X] Improved help
 - [X] More control over ouput with gap arguments
-- [X] Day labels (NEW)
+- [X] Day labels
+- [X] Orientation Portrait/Landscape (NEW)
 
 <details>
 	<summary><h4>Todo</h4></summary>
 	
-- [ ] Orientation Portrait/Landscape 
 - [ ] Configuration file
 - [ ] Color schemes
 - [ ] User defined characters(styles)
+- [ ] optimize performance
+- [ ] fix automated sizing
 
 </details>
 
@@ -68,7 +70,7 @@ $ gh contribs
 ```
 $ gh contribs --help
 
-Usage: gh contribs [-h] [-s <style>] [-w <weeks>] [-x] [-y] [-n] [-l]
+Usage: gh contribs [-h] [-s <style>] [-w <weeks>] [-x] [-y] [-n] [-l] [-p]
 
 Possible Arguments:
         -h | --help
@@ -78,6 +80,7 @@ Possible Arguments:
         -y | --ygap
         -n | --no-doubles
         -l | --labels
+        -p | --portrait
 
 Styles:
 block square dot shade fisheye diamond plus contrast

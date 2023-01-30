@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# debug settings
 set -e    #exit on error for each command
 #set -x
 #trap read debug
@@ -11,10 +12,11 @@ main()
   weeks="$(($weeks_max-weeks_min))"
   week_labels=("Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat")
   style=contrast
-  vsep=""
-  hsep="\n"
+  xgap=""
+  ygap="\n"
 
   # boolean
+  portrait=1
   labels=1
   nodouble=1
   #echo "main is running"
@@ -46,24 +48,24 @@ main()
   #Automatic size
   #1. Calc Output_width
   #2. Check Output_width < Terminal_size
-  #3. Reaction:
+  #3. Possible Reactions:
     #- ignore request, and output error message
     #- Force capable width
 
   if [ -t 1 ] && [ "$(tput cols)" -lt "$width" ] || [ $nodouble -eq 0 ]; then
-    print_graph_landscape 0
+    print_graph 0
   else
-    if [ -z "$vsep" ]; then
-      print_graph_landscape 1
+    if [ -z "$xgap" ]; then
+      print_graph 1
     else
-      print_graph_landscape 0
+      print_graph 0
     fi
   fi
 
   #printf "weeks: $weeks, w-min: $weeks_min, w-max: $weeks_max \n"
 }
 
-parse_args() 
+parse_args()
 {
   while [ $# -gt 0 ]; do
     case "$1" in
@@ -79,20 +81,23 @@ parse_args()
         [ -z $2 ] && echo "error" >&2 && exit 1
         shift 2;;
       -x|--xgap)
-        vsep=" "
+        xgap=" "
         shift 1;;
       -y|--ygap)
-        hsep="\n\n"
+        ygap="\n\n"
         shift 1;;
       -xy|-yx)
-        vsep=" "
-        hsep="\n\n"
+        xgap=" "
+        ygap="\n\n"
         shift 1;;
       -n|--no-doubles)
         nodouble=0
         shift 1;;
       -l|--labels)
         labels=0
+        shift 1;;
+      -p|--portrait)
+        portrait=0
         shift 1;;
       -h|--help)
         h_usage >&2
@@ -108,7 +113,7 @@ parse_args()
   return 0
 }
 
-parse_style ()
+parse_style()
 {
   case "$style" in
     block)
@@ -143,7 +148,16 @@ parse_style ()
   return 0
 }
 
-print_graph_landscape () 
+print_graph()
+{
+  if [[ $portrait -eq 0 ]]; then
+    print_graph_portrait $1
+  else
+    print_graph_landscape $1
+  fi
+}
+
+print_graph_landscape()
 {
   #printf "\nUsed function\n\n"
   for d in $(seq 0 6); do
@@ -151,12 +165,29 @@ print_graph_landscape ()
     for w in $(seq $weeks_min $weeks_max); do
       hex="${days[w*7+d]}"
       for i in $(seq 0 $1);do
-        [ ! -z "$hex" ] && printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"  "$vsep"
+        [ ! -z "$hex" ] && printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"  "$xgap"
       done
     done
-    printf "$hsep"
+    printf "$ygap"
   done
   printf "\n"
+  return 0
+}
+
+print_graph_portrait()
+{
+  #printf "\nUsed function\n\n"
+  for w in $(seq $weeks_min $weeks_max); do
+    for d in $(seq 0 6); do
+      hex="${days[w*7+d]}"
+      for i in $(seq 0 $1);do
+        [ ! -z "$hex" ] && printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"  "$xgap"
+      done
+    done
+    printf "$ygap"
+  done
+  printf "\n"
+
   return 0
 }
 
@@ -165,7 +196,7 @@ calculate_output()
   printf "$(($1*2))" # times 2 due to doubling
 }
 
-char() 
+char()
 {
   if [ "$1" = "#ebedf0" ]; then
     echo "$block_empty"
@@ -176,25 +207,25 @@ char()
 }
 
 # msgs
-h_usage() 
+h_usage()
 {
-  printf "Usage: gh contribs [-h] [-s <style>] [-w <weeks>] [-x] [-y] [-n] [-l]\n\n"
+  printf "Usage: gh contribs [-h] [-s <style>] [-w <weeks>] [-x] [-y] [-n] [-l] [-p]\n\n"
   return 0
 }
 
-h_error() 
+h_error()
 {
   printf "Error: Invalid input!\n\n"
   return 0
 }
 
-h_warning() 
+h_warning()
 {
   printf "Warning: Terminal too thin, (-x --xgap) ignored!\n"
   return 0
 }
 
-h_args() 
+h_args()
 {
   printf "Arguments:
 
@@ -205,11 +236,12 @@ h_args()
   -y | --ygap             Put a Gap between each Row
   -n | --no-doubles       Disable Automatic Char Doubling
   -l | --labels           Enable Labels
+  -p | --portrait         Set Output Orientation
   \n"
   return 0
 }
 
-h_styles() 
+h_styles()
 {
   printf "Styles:\nblock square dot shade fisheye diamond plus contrast\n"
   return 0
