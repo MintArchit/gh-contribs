@@ -2,6 +2,10 @@
 
 Render your contribution graph to the terminal.
 
+<!-- ![gif](resources/t-rec.gif) -->
+
+<img width="745" alt="Screenshot" src="assets/gif/v0.18.8.png">
+
 <img width="745" alt="Screenshot" src="https://user-images.githubusercontent.com/887/153284410-74925ad9-0e5a-441c-b4cb-5cbeced0630d.png">
 
 connects directly via github api / no third party service is used
@@ -25,7 +29,8 @@ connects directly via github api / no third party service is used
 - [ ] Color schemes
 - [ ] User defined characters(styles)
 - [ ] optimize performance
-- [ ] fix automated sizing
+- [ ] improve automatic resizing
+- [ ] inlcude update notifier
 
 </details>
 
