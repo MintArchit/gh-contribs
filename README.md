@@ -70,8 +70,10 @@ $ gh contribs
 #### display help with a list of all possible arguments
 
 ```
-$ gh contribs --help
+gh contribs --help
 
+```
+```
 Usage: gh contribs [-h] [-s <style>] [-w <weeks>] [-x] [-y] [-n] [-l] [-p] [-d] [-W]
 
 Arguments:
