@@ -72,17 +72,20 @@ $ gh contribs
 ```
 $ gh contribs --help
 
-Usage: gh contribs [-h] [-s <style>] [-w <weeks>] [-x] [-y] [-n] [-l] [-p]
+Usage: gh contribs [-h] [-s <style>] [-w <weeks>] [-x] [-y] [-n] [-l] [-p] [-d] [-W]
 
-Possible Arguments:
-        -h | --help
-        -s | --style <style>
-        -w | --weeks <weeks>
-        -x | --xgap
-        -y | --ygap
-        -n | --no-doubles
-        -l | --labels
-        -p | --portrait
+Arguments:
+
+  -h | --help             Displays this help.
+  -s | --style <style>    Change Character
+  -w | --weeks <weeks>    Set range of weeks to be displayed
+  -x | --xgap             Put a Gap between each Column
+  -y | --ygap             Put a Gap between each Row
+  -n | --no-doubles       Disable Automatic Char Doubling
+  -l | --labels           Enable Labels
+  -p | --portrait         Set Output Orientation
+  -d | --debug            Enable additional debug output
+  -W | --warning          Disable warning output
 
 Styles:
 block square dot shade fisheye diamond plus contrast
