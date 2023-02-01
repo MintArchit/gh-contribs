@@ -20,7 +20,7 @@ main()
   labels=1
   nodouble=1
   debug=1
-  verbose=0
+  warning=0
 
   #echo "main is running"
   parse_args "$@"
@@ -39,11 +39,12 @@ main()
   [ $labels -eq 0 ] && wlabel=4
   [ -z "$xgap" ] && wxgap=0
   [ $debug -eq 0 ] && printf "
-  #weeks: $weeks
-  #double: $wdouble
-  #wxgap: $wxgap
-  #wlabel: $wlabel
-  #((weeks*(wdouble+wxgap)+wlabel+2))\n" 
+  weeks: $weeks
+  double: $wdouble
+  wxgap: $wxgap
+  wlabel: $wlabel
+  ((weeks*(wdouble+wxgap)+wlabel+2))
+  \n" 
 
 
   # gh api
@@ -74,9 +75,9 @@ main()
     #printf "weeks = $cstep1 / $cstep2 \n"
     #local output_width="$(calculate_output_width $weeks)"
     #printf "$output_width\n"
-    weeks="$(((terminal_width-2-wlabel)/(wdouble+wxgap)))"
+    weeks="$(((terminal_width-wdouble-wxgap-wlabel)/(wdouble+wxgap)))"
     weeks_min="$((weeks_max-weeks))"
-    [ $verbose -eq 0 ] && printf "exceeding terminal_width, resizing to $weeks weeks\n"
+    [ $warning -eq 0 ] && printf "exceeding terminal_width, resizing to $weeks weeks\n"
   fi
   [ $nodouble -eq 0 ] && print_graph 0 || print_graph 1
 
@@ -116,6 +117,12 @@ parse_args()
         shift 1;;
       -p|--portrait)
         portrait=0
+        shift 1;;
+      -d|--debug)
+        debug=0
+        shift 1;;
+      -W|--warning)
+        warning=1
         shift 1;;
       -h|--help)
         h_usage >&2
@@ -237,7 +244,8 @@ calculate_output_width()
   [ $nodouble -eq 0 ] && wdouble=1
   [ $labels -eq 0 ] && wlabel=4
   [ -z "$xgap" ] && wxgap=0
-  printf "$(($1*(wdouble+wxgap)+wlabel+2))" 
+  #printf "$(($1*(wdouble+wxgap)+wlabel+2))" 
+  printf "$(($1*(wdouble+wxgap)+wlabel+wdouble+wgap))" 
 }
 
 char()
@@ -253,7 +261,7 @@ char()
 # msgs
 h_usage()
 {
-  printf "Usage: gh contribs [-h] [-s <style>] [-w <weeks>] [-x] [-y] [-n] [-l] [-p]\n\n"
+  printf "Usage: gh contribs [-h] [-s <style>] [-w <weeks>] [-x] [-y] [-n] [-l] [-p] [-d] [-W]\n\n"
   return 0
 }
 
@@ -281,6 +289,8 @@ h_args()
   -n | --no-doubles       Disable Automatic Char Doubling
   -l | --labels           Enable Labels
   -p | --portrait         Set Output Orientation
+  -d | --debug            Enable additional debug output
+  -W | --warning          Disable warning output
   \n"
   return 0
 }

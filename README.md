@@ -21,12 +21,13 @@ connects directly via github api / no third party service is used
 
 <details>
 	<summary><h4>Todo</h4></summary>
-	
+
 - [ ] Configuration file
 - [ ] Color schemes
 - [ ] User defined characters(styles)
 - [ ] optimize performance
 - [ ] inlcude update notifier
+- [ ] add version arg
 
 </details>
 
