@@ -71,7 +71,6 @@ $ gh contribs
 
 ```
 gh contribs --help
-
 ```
 ```
 Usage: gh contribs [-h] [-s <style>] [-w <weeks>] [-x] [-y] [-n] [-l] [-p] [-d] [-W]
@@ -91,7 +90,6 @@ Arguments:
 
 Styles:
 block square dot shade fisheye diamond plus contrast
-
 ```
 
 ## Styles
