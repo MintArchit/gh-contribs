@@ -76,7 +76,7 @@ main()
     #printf "$output_width\n"
     weeks="$(((terminal_width-2-wlabel)/(wdouble+wxgap)))"
     weeks_min="$((weeks_max-weeks))"
-    [ $verbose -eq 0 ]printf "exceeding terminal_width, resizing to $weeks weeks\n"
+    [ $verbose -eq 0 ] && printf "exceeding terminal_width, resizing to $weeks weeks\n"
   fi
   [ $nodouble -eq 0 ] && print_graph 0 || print_graph 1
 
