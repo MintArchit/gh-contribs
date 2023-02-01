@@ -2,11 +2,7 @@
 
 Render your contribution graph to the terminal.
 
-<!-- ![gif](resources/t-rec.gif) -->
-
 <img width="745" alt="Screenshot" src="assets/gif/v0.18.8.gif">
-
-<img width="745" alt="Screenshot" src="https://user-images.githubusercontent.com/887/153284410-74925ad9-0e5a-441c-b4cb-5cbeced0630d.png">
 
 connects directly via github api / no third party service is used
 
@@ -16,9 +12,10 @@ connects directly via github api / no third party service is used
 
 - [X] Default Style Contrast
 - [X] Specify weeks
-- [X] Automated Sizing (WIP)
+- [X] Automatic Resizing
 - [X] Improved help
 - [X] More control over ouput with gap arguments
+- [X] Doubling █ -> ██ 
 - [X] Day labels
 - [X] Orientation Portrait/Landscape (NEW)
 
@@ -29,7 +26,6 @@ connects directly via github api / no third party service is used
 - [ ] Color schemes
 - [ ] User defined characters(styles)
 - [ ] optimize performance
-- [ ] improve automatic resizing
 - [ ] inlcude update notifier
 
 </details>

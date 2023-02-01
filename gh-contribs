@@ -19,6 +19,9 @@ main()
   portrait=1
   labels=1
   nodouble=1
+  debug=1
+  verbose=0
+
   #echo "main is running"
   parse_args "$@"
   #echo "p_args is running"
@@ -26,9 +29,23 @@ main()
   #echo "p_style is running"
 
   # local variables
-  local width="$(calculate_output $weeks)"
-  # at the moment not considering labels or nodoubles
+  local output_width="$(calculate_output_width $weeks)"
+  local terminal_width="$(tput cols)"
   
+  local wdouble=2
+  local wlabel=0
+  local wxgap=1
+  [ $nodouble -eq 0 ] && wdouble=1
+  [ $labels -eq 0 ] && wlabel=4
+  [ -z "$xgap" ] && wxgap=0
+  [ $debug -eq 0 ] && printf "
+  #weeks: $weeks
+  #double: $wdouble
+  #wxgap: $wxgap
+  #wlabel: $wlabel
+  #((weeks*(wdouble+wxgap)+wlabel+2))\n" 
+
+
   # gh api
   days=( $(gh api graphql -f query='{
     viewer {
@@ -45,24 +62,25 @@ main()
   }' --jq '..|.color?' | grep .) )
   #}' --cache 24h --jq '..|.color?' | grep .) )
 
-  #Automatic size
-  #1. Calc Output_width
-  #2. Check Output_width < Terminal_size
-  #3. Possible Reactions:
-    #- ignore request, and output error message
-    #- Force capable width
+  [ $debug -eq 0 ] && printf "terminal: $terminal_width, calculated-output: $output_width\n"
 
-  if [ -t 1 ] && [ "$(tput cols)" -lt "$width" ] || [ $nodouble -eq 0 ]; then
-    print_graph 0
-  else
-    if [ -z "$xgap" ]; then
-      print_graph 1
-    else
-      print_graph 0
-    fi
+  force=1
+  # automatic resizing
+  if [ $terminal_width -lt "$output_width" ] && [ $force -eq 1 ] && [ $portrait -eq 1 ]; then    # t < O
+    # adjust weeks
+    # x=83-2-4/(2+1)
+    #cstep1="$((terminal_width-2-wlabel))"
+    #cstep2="$(((wdouble+wxgaps)))"
+    #printf "weeks = $cstep1 / $cstep2 \n"
+    #local output_width="$(calculate_output_width $weeks)"
+    #printf "$output_width\n"
+    weeks="$(((terminal_width-2-wlabel)/(wdouble+wxgap)))"
+    weeks_min="$((weeks_max-weeks))"
+    [ $verbose -eq 0 ]printf "exceeding terminal_width, resizing to $weeks weeks\n"
   fi
+  [ $nodouble -eq 0 ] && print_graph 0 || print_graph 1
 
-  #printf "weeks: $weeks, w-min: $weeks_min, w-max: $weeks_max \n"
+  [ $debug -eq 0 ] && printf "weeks: $weeks, w-min: $weeks_min, w-max: $weeks_max \n"
 }
 
 parse_args()
@@ -163,10 +181,8 @@ print_graph_landscape()
   for d in $(seq 0 6); do
     [ $labels -eq 0 ] && printf "%s${week_labels[$d]} "
     for w in $(seq $weeks_min $weeks_max); do
-      hex="${days[w*7+d]}"
-      for i in $(seq 0 $1);do
-        [ ! -z "$hex" ] && printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"  "$xgap"
-      done
+      print_graph_cmd $1
+      #print_debug_graph_cmd $1
     done
     printf "$ygap"
   done
@@ -179,10 +195,7 @@ print_graph_portrait()
   #printf "\nUsed function\n\n"
   for w in $(seq $weeks_min $weeks_max); do
     for d in $(seq 0 6); do
-      hex="${days[w*7+d]}"
-      for i in $(seq 0 $1);do
-        [ ! -z "$hex" ] && printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"  "$xgap"
-      done
+      print_graph_cmd $1
     done
     printf "$ygap"
   done
@@ -191,9 +204,40 @@ print_graph_portrait()
   return 0
 }
 
-calculate_output()
+print_graph_cmd()
 {
-  printf "$(($1*2))" # times 2 due to doubling
+  hex="${days[w*7+d]}"
+  for i in $(seq 0 $1);do
+    [ ! -z "$hex" ] && printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"
+  done
+  [ ! -z "$hex" ] && printf "$xgap"
+
+  return 0
+}
+
+print_debug_graph_cmd()
+{
+  hex="${days[w*7+d]}"
+  for i in $(seq 0 $1);do
+    [ ! -z "$hex" ] && printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"
+  done
+
+  [ ! -z "$hex" ] && printf " $((16#${hex:1:2})) $((16#${hex:3:2})) $((16#${hex:5:2})) " "$(char "$hex")" "\n"
+  return 0
+}
+
+calculate_output_width()
+{
+  #calclogic
+  #x=weeks*(wdouble+wxgaps)+wlabel+2
+  #(x-2-wlabel)/(wdouble+wxgaps)=weeks
+  local wdouble=2
+  local wlabel=0
+  local wxgap=1
+  [ $nodouble -eq 0 ] && wdouble=1
+  [ $labels -eq 0 ] && wlabel=4
+  [ -z "$xgap" ] && wxgap=0
+  printf "$(($1*(wdouble+wxgap)+wlabel+2))" 
 }
 
 char()
