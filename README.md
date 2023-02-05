@@ -10,20 +10,21 @@ connects directly via github api / no third party service is used
 
 ## ✨ Features 
 
-- [X] Default Style Contrast
+- [X] Color schemes (NEW)
+- [X] Orientation Portrait/Landscape (NEW)
+- [X] Day labels
 - [X] Specify weeks
 - [X] Automatic Resizing
 - [X] Improved help
 - [X] More control over ouput with gap arguments
 - [X] Doubling █ -> ██ 
-- [X] Day labels
-- [X] Orientation Portrait/Landscape (NEW)
+- [X] Default Style Contrast
 
 <details>
 	<summary><h4>Todo</h4></summary>
 
 - [ ] Configuration file
-- [ ] Color schemes
+- [ ] advanced animations
 - [ ] User defined characters(styles)
 - [ ] optimize performance
 - [ ] inlcude update notifier
@@ -73,12 +74,13 @@ $ gh contribs
 gh contribs --help
 ```
 ```
-Usage: gh contribs [-h] [-s <style>] [-w <weeks>] [-x] [-y] [-n] [-l] [-p] [-d] [-W]
+Usage: gh contribs [-h] [-s <scheme>] [-c <char>][-w <weeks>] [-x] [-y] [-n] [-l] [-p] [-d] [-W]
 
 Arguments:
 
   -h | --help             Displays this help.
-  -s | --style <style>    Change Character
+  -s | --scheme <style>   Color Scheme
+  -c | --char <char>      Change Character
   -w | --weeks <weeks>    Set range of weeks to be displayed
   -x | --xgap             Put a Gap between each Column
   -y | --ygap             Put a Gap between each Row
@@ -88,8 +90,11 @@ Arguments:
   -d | --debug            Enable additional debug output
   -W | --warning          Disable warning output
 
-Styles:
+Chars:
 block square dot shade fisheye diamond plus contrast
+
+Schemes:
+gh_contrast vibrant blackAwhite dracula north gold sunset mint
 ```
 
 ## Styles

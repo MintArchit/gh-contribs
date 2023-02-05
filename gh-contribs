@@ -7,6 +7,7 @@ set -e    #exit on error for each command
 main()
 {
   # global variables
+  current_character_empty=0
   weeks_max=52
   weeks_min=0
   weeks="$(($weeks_max-weeks_min))"
@@ -21,12 +22,23 @@ main()
   nodouble=1
   debug=1
   warning=0
+  scheme_gh_default=("#ebedf0" "#9be9a8" "#40c463" "#30a14e" "#216e39")
+  scheme_gh_contrast=("#555555" "#9be9a8" "#40c463" "#30a14e" "#216e39")
+  scheme_vibrant=("#555555" "#F9ED69" "#F08A5D" "#B83B5E" "#6A2C70")
+  scheme_blackAwhite=("#555555" "#707070" "#a0a0a0" "#d0d0d0" "#ffffff")
+  scheme_dracula=("#282a36" "#50fa7b" "#ff79c6" "#bd93f9" "#6272a4")
+  scheme_north=("#555555" "#DBE2EF" "#3282B8" "#3F72AF" "#112D4E")
+  scheme_gold=("#555555" "#FDEEDC" "#FFD8A9" "#F1A661" "#E38B29")
+  scheme_sunset=("#555555" "#F67280" "#C06C84" "#6C5B7B" "#355C7D")
+  scheme_mint=("#555555" "#5AFEAD" "#21B475" "#1D794B" "#294B36")
+  scheme="gh_contrast"
 
   #echo "main is running"
   parse_args "$@"
   #echo "p_args is running"
   parse_style
   #echo "p_style is running"
+  parse_scheme
 
   # local variables
   local output_width="$(calculate_output_width $weeks)"
@@ -44,7 +56,7 @@ main()
   wxgap: $wxgap
   wlabel: $wlabel
   ((weeks*(wdouble+wxgap)+wlabel+2))
-  \n" 
+  \n"
 
 
   # gh api
@@ -88,7 +100,11 @@ parse_args()
 {
   while [ $# -gt 0 ]; do
     case "$1" in
-      -s|--style)
+      -s|--scheme)
+        scheme="$2"
+        [ -z $2 ] && h_styles >&2 && exit 1
+        shift 2;;
+      -c|--char)
         style="$2"
         [ -z $2 ] && h_styles >&2 && exit 1
         shift 2;;
@@ -128,6 +144,7 @@ parse_args()
         h_usage >&2
         h_args >&2
         h_styles >&2
+        h_schemes >&2
         exit 0;;
       *)
         h_usage >&2
@@ -173,6 +190,14 @@ parse_style()
   return 0
 }
 
+parse_scheme()
+{
+  local var=$scheme[@]
+  eval current_scheme=\${scheme_${scheme}[@]}
+  [ -z "$current_scheme" ] && eval 'echo "error: scheme '$scheme' not recognized" >&2;h_schemes >&2;exit 1;'
+  return 0
+}
+
 print_graph()
 {
   if [[ $portrait -eq 0 ]]; then
@@ -189,7 +214,6 @@ print_graph_landscape()
     [ $labels -eq 0 ] && printf "%s${week_labels[$d]} "
     for w in $(seq $weeks_min $weeks_max); do
       print_graph_cmd $1
-      #print_debug_graph_cmd $1
     done
     printf "$ygap"
   done
@@ -213,23 +237,16 @@ print_graph_portrait()
 
 print_graph_cmd()
 {
+  # hex = "#xxyyzz"
   hex="${days[w*7+d]}"
+  [ "$debug" -eq 0 ] && printf "before: $hex"
+  [ ! -z "$hex" ] && hex="$(color_mod $hex ${current_scheme[@]})"
+  [ "$debug" -eq 0 ] && printf "after: $hex"
   for i in $(seq 0 $1);do
-    [ ! -z "$hex" ] && printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"
+    [ ! -z "$hex" ] && printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char $hex $scheme_vibrant)"
   done
   [ ! -z "$hex" ] && printf "$xgap"
 
-  return 0
-}
-
-print_debug_graph_cmd()
-{
-  hex="${days[w*7+d]}"
-  for i in $(seq 0 $1);do
-    [ ! -z "$hex" ] && printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char "$hex")"
-  done
-
-  [ ! -z "$hex" ] && printf " $((16#${hex:1:2})) $((16#${hex:3:2})) $((16#${hex:5:2})) " "$(char "$hex")" "\n"
   return 0
 }
 
@@ -248,20 +265,47 @@ calculate_output_width()
   printf "$(($1*(wdouble+wxgap)+wlabel+wdouble+wgap))" 
 }
 
+color_mod()
+{
+  local gh_default=("#ebedf0" "#9be9a8" "#40c463" "#30a14e" "#216e39")
+  local hex="$1"
+  shift
+  local scheme=("$@")
+  case "$hex" in
+    "${gh_default[0]}")
+      printf "${scheme[0]}";;
+    "${gh_default[1]}")
+      printf "${scheme[1]}";;
+    "${gh_default[2]}")
+      printf "${scheme[2]}";;
+    "${gh_default[3]}")
+      printf "${scheme[3]}";;
+    "${gh_default[4]}")
+      printf "${scheme[4]}";;
+    *)
+      printf "$hex";;
+  esac
+
+  return 0
+}
+
 char()
 {
-  if [ "$1" = "#ebedf0" ]; then
+  local hex="$1"
+  local scheme="$2"
+  if [ "$hex" = "${scheme[0]}" ]; then
     echo "$block_empty"
   else
     echo "$block_full"
   fi
+
   return 0
 }
 
 # msgs
 h_usage()
 {
-  printf "Usage: gh contribs [-h] [-s <style>] [-w <weeks>] [-x] [-y] [-n] [-l] [-p] [-d] [-W]\n\n"
+  printf "Usage: gh contribs [-h] [-s <scheme>] [-c <char>][-w <weeks>] [-x] [-y] [-n] [-l] [-p] [-d] [-W]\n\n"
   return 0
 }
 
@@ -282,7 +326,8 @@ h_args()
   printf "Arguments:
 
   -h | --help             Displays this help.
-  -s | --style <style>    Change Character
+  -s | --scheme <style>   Color Scheme
+  -c | --char <char>      Change Character
   -w | --weeks <weeks>    Set range of weeks to be displayed
   -x | --xgap             Put a Gap between each Column
   -y | --ygap             Put a Gap between each Row
@@ -297,7 +342,13 @@ h_args()
 
 h_styles()
 {
-  printf "Styles:\nblock square dot shade fisheye diamond plus contrast\n"
+  printf "Chars:\nblock square dot shade fisheye diamond plus contrast\n\n"
+  return 0
+}
+
+h_schemes()
+{
+  printf "Schemes:\ngh_contrast vibrant blackAwhite dracula north gold sunset mint\n\n"
   return 0
 }
 
