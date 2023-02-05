@@ -12,7 +12,7 @@ main()
   weeks_min=0
   weeks="$(($weeks_max-weeks_min))"
   week_labels=("Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat")
-  style=contrast
+  style=block
   xgap=""
   ygap="\n"
 
@@ -22,15 +22,15 @@ main()
   nodouble=1
   debug=1
   warning=0
-  scheme_gh_default=("#ebedf0" "#9be9a8" "#40c463" "#30a14e" "#216e39")
-  scheme_gh_contrast=("#555555" "#9be9a8" "#40c463" "#30a14e" "#216e39")
-  scheme_vibrant=("#555555" "#F9ED69" "#F08A5D" "#B83B5E" "#6A2C70")
-  scheme_blackAwhite=("#555555" "#707070" "#a0a0a0" "#d0d0d0" "#ffffff")
+  scheme_gh_original=("#ebedf0" "#9be9a8" "#40c463" "#30a14e" "#216e39")
+  scheme_gh_contrast=("#333333" "#9be9a8" "#40c463" "#30a14e" "#216e39")
+  scheme_vibrant=("#333333" "#F9ED69" "#F08A5D" "#B83B5E" "#6A2C70")
+  scheme_blackAwhite=("#333333" "#707070" "#a0a0a0" "#d0d0d0" "#ffffff")
   scheme_dracula=("#282a36" "#50fa7b" "#ff79c6" "#bd93f9" "#6272a4")
-  scheme_north=("#555555" "#DBE2EF" "#3282B8" "#3F72AF" "#112D4E")
-  scheme_gold=("#555555" "#FDEEDC" "#FFD8A9" "#F1A661" "#E38B29")
-  scheme_sunset=("#555555" "#F67280" "#C06C84" "#6C5B7B" "#355C7D")
-  scheme_mint=("#555555" "#5AFEAD" "#21B475" "#1D794B" "#294B36")
+  scheme_north=("#333333" "#DBE2EF" "#3282B8" "#3F72AF" "#112D4E")
+  scheme_gold=("#333333" "#FDEEDC" "#FFD8A9" "#F1A661" "#E38B29")
+  scheme_sunset=("#333333" "#F67280" "#C06C84" "#6C5B7B" "#355C7D")
+  scheme_mint=("#333333" "#5AFEAD" "#21B475" "#1D794B" "#294B36")
   scheme="gh_contrast"
 
   #echo "main is running"

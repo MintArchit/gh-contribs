@@ -18,7 +18,6 @@ connects directly via github api / no third party service is used
 - [X] Improved help
 - [X] More control over ouput with gap arguments
 - [X] Doubling █ -> ██ 
-- [X] Default Style Contrast
 
 <details>
 	<summary><h4>Todo</h4></summary>
@@ -99,14 +98,14 @@ gh_contrast vibrant blackAwhite dracula north gold sunset mint
 
 ## Styles
 
-- contrast (default)
-- block
+- block (default)
 - square
 - dot
 - shade
 - fisheye
 - diamond
 - plus
+- contrast
 
 ## Limitations
 
