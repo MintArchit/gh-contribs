@@ -2,7 +2,7 @@
 
 Render your contribution graph to the terminal.
 
-<img width="745" alt="Screenshot v0.21.2.gif" src="https://user-images.githubusercontent.com/86726739/218313437-293946c3-3eaa-402e-8e6c-d46bfb9f394b.png">
+<img width="745" alt="Screenshot v0.21.2.gif" src="https://github.com/mintarchit/gh-contribs/blob/c8a7629/gif/gh-contribs_v0.21.2.gif">
 
 
 connects directly via github api / no third party service is used
