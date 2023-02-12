@@ -2,7 +2,8 @@
 
 Render your contribution graph to the terminal.
 
-<img width="745" alt="Screenshot" src="assets/gif/v0.18.8.gif">
+<img width="745" alt="Screenshot v0.21.2.gif" src="https://user-images.githubusercontent.com/86726739/218313437-293946c3-3eaa-402e-8e6c-d46bfb9f394b.png">
+
 
 connects directly via github api / no third party service is used
 
