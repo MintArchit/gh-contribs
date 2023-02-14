@@ -299,7 +299,7 @@ glyph()
 # msgs
 h_usage()
 {
-  printf "Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>][-w <weeks>] [-x] [-y] [-d] [-l] [-p] [-D] [-W]\n\n"
+  printf "Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>] [-w <weeks>] [-x] [-y] [-d] [-l] [-p] [-D] [-W]\n\n"
   return 0
 }
 

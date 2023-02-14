@@ -75,7 +75,7 @@ $ gh contribs
 gh contribs --help
 ```
 ```
-Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>][-w <weeks>] [-x] [-y] [-d] [-l] [-p] [-D] [-W]
+Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>] [-w <weeks>] [-x] [-y] [-d] [-l] [-p] [-D] [-W]
 
 Arguments:
 
