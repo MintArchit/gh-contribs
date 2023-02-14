@@ -7,19 +7,19 @@ set -e    #exit on error for each command
 main()
 {
   # global variables
-  current_character_empty=0
+  current_glyphacter_empty=0
   weeks_max=52
   weeks_min=0
   weeks="$(($weeks_max-weeks_min))"
   week_labels=("Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat")
-  style=block
-  xgap=""
+  glyph=square
+  xgap=" "
   ygap="\n"
 
   # boolean
   portrait=1
   labels=1
-  nodouble=1
+  double=1
   debug=1
   warning=0
   scheme_gh_original=("#ebedf0" "#9be9a8" "#40c463" "#30a14e" "#216e39")
@@ -36,18 +36,18 @@ main()
   #echo "main is running"
   parse_args "$@"
   #echo "p_args is running"
-  parse_style
-  #echo "p_style is running"
+  parse_glyph
+  #echo "p_glyph is running"
   parse_scheme
 
   # local variables
   local output_width="$(calculate_output_width $weeks)"
   local terminal_width="$(tput cols)"
   
-  local wdouble=2
+  local wdouble=1
   local wlabel=0
   local wxgap=1
-  [ $nodouble -eq 0 ] && wdouble=1
+  [ $double -eq 0 ] && wdouble=2
   [ $labels -eq 0 ] && wlabel=4
   [ -z "$xgap" ] && wxgap=0
   [ $debug -eq 0 ] && printf "
@@ -73,7 +73,7 @@ main()
       }
     }
   }' --jq '..|.color?' | grep .) )
-  #}' --cache 24h --jq '..|.color?' | grep .) )
+  #}' --gache 24h --jq '..|.color?' | grep .) )
 
   [ $debug -eq 0 ] && printf "terminal: $terminal_width, calculated-output: $output_width\n"
 
@@ -91,7 +91,7 @@ main()
     weeks_min="$((weeks_max-weeks))"
     [ $warning -eq 0 ] && printf "exceeding terminal_width, resizing to $weeks weeks\n"
   fi
-  [ $nodouble -eq 0 ] && print_graph 0 || print_graph 1
+  [ $double -eq 0 ] && print_graph 1 || print_graph 0
 
   [ $debug -eq 0 ] && printf "weeks: $weeks, w-min: $weeks_min, w-max: $weeks_max \n"
 }
@@ -102,11 +102,11 @@ parse_args()
     case "$1" in
       -s|--scheme)
         scheme="$2"
-        [ -z $2 ] && h_styles >&2 && exit 1
+        [ -z $2 ] && h_glyphs >&2 && exit 1
         shift 2;;
-      -c|--char)
-        style="$2"
-        [ -z $2 ] && h_styles >&2 && exit 1
+      -g|--glyph)
+        glyph="$2"
+        [ -z $2 ] && h_glyphs >&2 && exit 1
         shift 2;;
       -w|--weeks)
         weeks="$2"
@@ -116,7 +116,7 @@ parse_args()
         [ -z $2 ] && echo "error" >&2 && exit 1
         shift 2;;
       -x|--xgap)
-        xgap=" "
+        xgap=""
         shift 1;;
       -y|--ygap)
         ygap="\n\n"
@@ -125,8 +125,8 @@ parse_args()
         xgap=" "
         ygap="\n\n"
         shift 1;;
-      -n|--no-doubles)
-        nodouble=0
+      -d|--double)
+        double=0
         shift 1;;
       -l|--labels)
         labels=0
@@ -134,16 +134,16 @@ parse_args()
       -p|--portrait)
         portrait=0
         shift 1;;
-      -d|--debug)
+      -D|--Debug)
         debug=0
         shift 1;;
-      -W|--warning)
+      -W|--Warning)
         warning=1
         shift 1;;
       -h|--help)
         h_usage >&2
         h_args >&2
-        h_styles >&2
+        h_glyphs >&2
         h_schemes >&2
         exit 0;;
       *)
@@ -155,9 +155,9 @@ parse_args()
   return 0
 }
 
-parse_style()
+parse_glyph()
 {
-  case "$style" in
+  case "$glyph" in
     block)
       block_full="█"
       block_empty="$block_full";;
@@ -167,9 +167,6 @@ parse_style()
     dot)
       block_full="•"
       block_empty="$block_full";;
-    shade)
-      block_full="▒"
-      block_empty="░";;
     fisheye)
       block_full="◉"
       block_empty="●";;
@@ -179,12 +176,9 @@ parse_style()
     plus)
       block_full="✚"
       block_empty="•";;
-    contrast)
-      block_full="█"
-      block_empty="░";;
     *)
-      echo "error: style '$style' not recognized" >&2
-      h_styles >&2
+      echo "error: glyph '$glyph' not recognized" >&2
+      h_glyphs >&2
       exit 1;;
   esac
   return 0
@@ -243,7 +237,7 @@ print_graph_cmd()
   [ ! -z "$hex" ] && hex="$(color_mod $hex ${current_scheme[@]})"
   [ "$debug" -eq 0 ] && printf "after: $hex"
   for i in $(seq 0 $1);do
-    [ ! -z "$hex" ] && printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(char $hex $scheme_vibrant)"
+    [ ! -z "$hex" ] && printf "\e[38;2;%d;%d;%dm%s\e[m%s" "$((16#${hex:1:2}))" "$((16#${hex:3:2}))" "$((16#${hex:5:2}))" "$(glyph $hex $scheme_vibrant)"
   done
   [ ! -z "$hex" ] && printf "$xgap"
 
@@ -255,10 +249,10 @@ calculate_output_width()
   #calclogic
   #x=weeks*(wdouble+wxgaps)+wlabel+2
   #(x-2-wlabel)/(wdouble+wxgaps)=weeks
-  local wdouble=2
+  local wdouble=1
   local wlabel=0
   local wxgap=1
-  [ $nodouble -eq 0 ] && wdouble=1
+  [ $double -eq 0 ] && wdouble=2
   [ $labels -eq 0 ] && wlabel=4
   [ -z "$xgap" ] && wxgap=0
   #printf "$(($1*(wdouble+wxgap)+wlabel+2))" 
@@ -289,7 +283,7 @@ color_mod()
   return 0
 }
 
-char()
+glyph()
 {
   local hex="$1"
   local scheme="$2"
@@ -305,7 +299,7 @@ char()
 # msgs
 h_usage()
 {
-  printf "Usage: gh contribs [-h] [-s <scheme>] [-c <char>][-w <weeks>] [-x] [-y] [-n] [-l] [-p] [-d] [-W]\n\n"
+  printf "Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>][-w <weeks>] [-x] [-y] [-d] [-l] [-p] [-D] [-W]\n\n"
   return 0
 }
 
@@ -321,34 +315,41 @@ h_warning()
   return 0
 }
 
+#-c | --config <path/to/cfg> Specify Config
 h_args()
 {
   printf "Arguments:
 
-  -h | --help             Displays this help.
-  -s | --scheme <style>   Color Scheme
-  -c | --char <char>      Change Character
-  -w | --weeks <weeks>    Set range of weeks to be displayed
-  -x | --xgap             Put a Gap between each Column
-  -y | --ygap             Put a Gap between each Row
-  -n | --no-doubles       Disable Automatic Char Doubling
-  -l | --labels           Enable Labels
-  -p | --portrait         Set Output Orientation
-  -d | --debug            Enable additional debug output
-  -W | --warning          Disable warning output
+  -h | --help                 Displays this help.
+  -s | --scheme <name>        Color Scheme
+  -g | --glyph <char>         Change Character
+  -w | --weeks <weeks>        Set range of weeks to be displayed
+  -x | --xgap                 Remove Gap between each Column
+  -y | --ygap                 Put a Gap between each Row
+  -d | --double               Enable Doubling Glyph
+  -l | --labels               Enable Labels
+  -p | --portrait             Set Output Orientation
+  -D | --Debug                Enable additional debug output
+  -W | --Warning              Disable warning output
   \n"
   return 0
 }
 
-h_styles()
+h_glyphs()
 {
-  printf "Chars:\nblock square dot shade fisheye diamond plus contrast\n\n"
+  printf "glyphs:\nsquare dot fisheye diamond plus block\n\n"
   return 0
 }
 
 h_schemes()
 {
   printf "Schemes:\ngh_contrast vibrant blackAwhite dracula north gold sunset mint\n\n"
+  return 0
+}
+
+h_files()
+{
+  printf "Files:\n~/.config/gh-contribs/init.cfg\n\n"
   return 0
 }
 
