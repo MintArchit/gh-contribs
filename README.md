@@ -13,6 +13,7 @@ connects directly via github api / no third party service is used
 
 - [X] Color schemes (NEW)
 - [X] Orientation Portrait/Landscape (NEW)
+- [X] Diffrent Character Glyphs
 - [X] Day labels
 - [X] Specify weeks
 - [X] Automatic Resizing
@@ -27,7 +28,7 @@ connects directly via github api / no third party service is used
 - [ ] advanced animations
 - [ ] User defined characters(styles)
 - [ ] optimize performance
-- [ ] inlcude update notifier
+- [ ] include update notifier
 - [ ] add version arg
 
 </details>
@@ -74,39 +75,45 @@ $ gh contribs
 gh contribs --help
 ```
 ```
-Usage: gh contribs [-h] [-s <scheme>] [-c <char>][-w <weeks>] [-x] [-y] [-n] [-l] [-p] [-d] [-W]
+Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>][-w <weeks>] [-x] [-y] [-d] [-l] [-p] [-D] [-W]
 
 Arguments:
 
-  -h | --help             Displays this help.
-  -s | --scheme <style>   Color Scheme
-  -c | --char <char>      Change Character
-  -w | --weeks <weeks>    Set range of weeks to be displayed
-  -x | --xgap             Put a Gap between each Column
-  -y | --ygap             Put a Gap between each Row
-  -n | --no-doubles       Disable Automatic Char Doubling
-  -l | --labels           Enable Labels
-  -p | --portrait         Set Output Orientation
-  -d | --debug            Enable additional debug output
-  -W | --warning          Disable warning output
+  -h | --help                 Displays this help.
+  -s | --scheme <name>        Color Scheme
+  -g | --glyph <char>         Change Character
+  -w | --weeks <weeks>        Set range of weeks to be displayed
+  -x | --xgap                 Remove Gap between each Column
+  -y | --ygap                 Put a Gap between each Row
+  -d | --double               Enable Doubling Glyph
+  -l | --labels               Enable Labels
+  -p | --portrait             Set Output Orientation
+  -D | --Debug                Enable additional debug output
+  -W | --Warning              Disable warning output
 
-Chars:
-block square dot shade fisheye diamond plus contrast
+glyphs:
+square dot fisheye diamond plus block
 
 Schemes:
 gh_contrast vibrant blackAwhite dracula north gold sunset mint
 ```
 
-## Styles
+## Color Schemes [--scheme <style>]
 
-- block (default)
-- square
-- dot
-- shade
-- fisheye
-- diamond
-- plus
-- contrast
+```
+Schemes:
+gh_contrast vibrant blackAwhite dracula north gold sunset mint
+```
+
+<img width="745" alt="Screenshot v0.21.2.gif" src="https://github.com/mintarchit/gh-contribs/blob/c8a7629/gif/gh-contribs_v0.21.2.gif">
+
+## Character Glyphs [--char <char>]
+
+```
+Chars:
+square dot fisheye diamond plus block
+```
+<img width="745" alt="Screenshot v0.21.2.gif" src="https://github.com/mintarchit/gh-contribs/blob/c8a7629/gif/gh-contribs_v0.21.2.gif">
 
 ## Limitations
 
