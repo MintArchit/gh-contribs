@@ -105,15 +105,15 @@ Schemes:
 gh_contrast vibrant blackAwhite dracula north gold sunset mint
 ```
 
-<img width="745" alt="Screenshot v0.21.2.gif" src="https://github.com/mintarchit/gh-contribs/blob/c8a7629/gif/gh-contribs_v0.21.2.gif">
+<!-- <img width="745" alt="Screenshot v0.21.2.gif" src="https://github.com/mintarchit/gh-contribs/blob/c8a7629/gif/gh-contribs_v0.21.2.gif"> -->
 
-## Character Glyphs [--char <char>]
+## Character Glyphs [--glyph <char>]
 
 ```
 Chars:
 square dot fisheye diamond plus block
 ```
-<img width="745" alt="Screenshot v0.21.2.gif" src="https://github.com/mintarchit/gh-contribs/blob/c8a7629/gif/gh-contribs_v0.21.2.gif">
+<!-- <img width="745" alt="Screenshot v0.21.2.gif" src="https://github.com/mintarchit/gh-contribs/blob/c8a7629/gif/gh-contribs_v0.21.2.gif"> -->
 
 ## Limitations
 
