@@ -98,7 +98,7 @@ Schemes:
 gh_contrast vibrant blackAwhite dracula north gold sunset mint
 ```
 
-## Color Schemes [--scheme <style>]
+## Color Schemes [--scheme <name>]
 
 ```
 Schemes:
@@ -107,7 +107,7 @@ gh_contrast vibrant blackAwhite dracula north gold sunset mint
 
 <!-- <img width="745" alt="Screenshot v0.21.2.gif" src="https://github.com/mintarchit/gh-contribs/blob/c8a7629/gif/gh-contribs_v0.21.2.gif"> -->
 
-## Character Glyphs [--glyph <char>]
+## Character Glyphs [--glyph <glyph>]
 
 ```
 Chars:
