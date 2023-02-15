@@ -113,7 +113,7 @@ gh_contrast vibrant blackAwhite dracula north gold sunset mint
 Chars:
 square dot fisheye diamond plus block
 ```
-<!-- <img width="745" alt="Screenshot v0.21.2.gif" src="https://github.com/mintarchit/gh-contribs/blob/c8a7629/gif/gh-contribs_v0.21.2.gif"> -->
+<img width="745" alt="Screenshot char gif preview " src="https://github.com/mintarchit/gh-contribs/blob/d075d1a/gif/gh-contribs_char-preview_v0.3.6.gif">
 
 ## Limitations
 
