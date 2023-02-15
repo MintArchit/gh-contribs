@@ -105,7 +105,7 @@ Schemes:
 gh_contrast vibrant blackAwhite dracula north gold sunset mint
 ```
 
-<!-- <img width="745" alt="Screenshot v0.21.2.gif" src="https://github.com/mintarchit/gh-contribs/blob/c8a7629/gif/gh-contribs_v0.21.2.gif"> -->
+<img width="745" alt="Screenshot scheme gif preview " src="https://github.com/mintarchit/gh-contribs/blob/ba576fc/gif/gh-contribs_scheme-preview_v0.1.0.gif">
 
 ## Character Glyphs [--glyph \<glyph\>]
 
