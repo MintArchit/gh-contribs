@@ -31,6 +31,7 @@ connects directly via github api / no third party service is used
 - [ ] include update notifier
 - [ ] add version arg
 - [ ] add user arg
+- [ ] isolated per-repo graph
 
 </details>
 
