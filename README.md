@@ -30,6 +30,7 @@ connects directly via github api / no third party service is used
 - [ ] optimize performance
 - [ ] include update notifier
 - [ ] add version arg
+- [ ] add user arg
 
 </details>
 
