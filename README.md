@@ -32,6 +32,7 @@ connects directly via github api / no third party service is used
 - [ ] add version arg
 - [ ] add user arg
 - [ ] isolated per-repo graph
+- [ ] Show legend, month, and contribution count—separate flags for each
 
 </details>
 
