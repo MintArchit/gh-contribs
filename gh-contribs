@@ -94,6 +94,7 @@ main()
   [ $double -eq 0 ] && print_graph 1 || print_graph 0
 
   [ $debug -eq 0 ] && printf "weeks: $weeks, w-min: $weeks_min, w-max: $weeks_max \n"
+  return 0
 }
 
 parse_args()
@@ -199,6 +200,7 @@ print_graph()
   else
     print_graph_landscape $1
   fi
+  return 0
 }
 
 print_graph_landscape()
@@ -255,8 +257,9 @@ calculate_output_width()
   [ $double -eq 0 ] && wdouble=2
   [ $labels -eq 0 ] && wlabel=4
   [ -z "$xgap" ] && wxgap=0
-  #printf "$(($1*(wdouble+wxgap)+wlabel+2))" 
-  printf "$(($1*(wdouble+wxgap)+wlabel+wdouble+wgap))" 
+  #printf "$(($1*(wdouble+wxgap)+wlabel+2))"
+  printf "$(($1*(wdouble+wxgap)+wlabel+wdouble+wgap))"
+  return 0
 }
 
 color_mod()
