@@ -6,6 +6,9 @@ set -e    #exit on error for each command
 
 main()
 {
+
+  local version=v0.8.6
+
   # global variables
   current_glyphacter_empty=0
   weeks_max=52
@@ -146,6 +149,9 @@ parse_args()
         h_args >&2
         h_glyphs >&2
         h_schemes >&2
+        exit 0;;
+      -v|--version)
+        h_version >&2
         exit 0;;
       *)
         h_usage >&2
