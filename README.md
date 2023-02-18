@@ -11,8 +11,9 @@ connects directly via github api / no third party service is used
 
 ## ✨ Features 
 
+- [X] other user arg (NEW)
 - [X] Color schemes (NEW)
-- [X] Orientation Portrait/Landscape (NEW)
+- [X] Orientation Portrait/Landscape
 - [X] Diffrent Character Glyphs
 - [X] Day labels
 - [X] Specify weeks
@@ -30,7 +31,6 @@ connects directly via github api / no third party service is used
 - [ ] optimize performance
 - [ ] include update notifier
 - [ ] add version arg
-- [ ] add user arg
 - [ ] isolated per-repo graph
 - [ ] Show legend, month, and contribution count—separate flags for each
 
@@ -78,13 +78,14 @@ $ gh contribs
 gh contribs --help
 ```
 ```
-Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>] [-w <weeks>] [-x] [-y] [-d] [-l] [-p] [-D] [-W]
+Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>] [-u <user>] [-w <weeks>] [-x] [-y] [-d] [-l] [-p] [-D] [-W]
 
 Arguments:
 
   -h | --help                 Displays this help.
   -s | --scheme <name>        Color Scheme
   -g | --glyph <char>         Change Character
+  -u | --user <user>          Show graph for other users
   -w | --weeks <weeks>        Set range of weeks to be displayed
   -x | --xgap                 Remove Gap between each Column
   -y | --ygap                 Put a Gap between each Row
