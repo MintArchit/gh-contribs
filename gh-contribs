@@ -15,6 +15,8 @@ main()
   glyph=square
   xgap=" "
   ygap="\n"
+  #user="tonsky"
+  user=""
 
   # boolean
   portrait=1
@@ -60,20 +62,40 @@ main()
 
 
   # gh api
-  days=( $(gh api graphql -f query='{
-    viewer {
-      contributionsCollection {
-        contributionCalendar {
-          weeks {
-            contributionDays {
-              color
+  if [[ -z "$user" ]]; then
+    days=( $(gh api graphql -f query='{
+      viewer {
+        contributionsCollection {
+          contributionCalendar {
+            weeks {
+              contributionDays {
+                color
+              }
             }
           }
         }
       }
-    }
-  }' --jq '..|.color?' | grep .) )
-  #}' --gache 24h --jq '..|.color?' | grep .) )
+    }' --jq '..|.color?' | grep .) )
+  else
+    days=( $(gh api graphql -F "user=$user" -f query='query($user:String!) {
+      user(login: $user) 
+      {
+        contributionsCollection 
+        {
+          contributionCalendar 
+          {
+            weeks 
+            {
+              contributionDays 
+              {
+                color
+              }
+            }
+          }
+        }
+      }
+    }' --jq '..|.color?' | grep .) )
+  fi
 
   [ $debug -eq 0 ] && printf "terminal: $terminal_width, calculated-output: $output_width\n"
 
@@ -108,6 +130,10 @@ parse_args()
       -g|--glyph)
         glyph="$2"
         [ -z $2 ] && h_glyphs >&2 && exit 1
+        shift 2;;
+      -u|--user)
+        user="$2"
+        [ -z $2 ] && printf "\nError: no username given\n" >&2 && exit 1
         shift 2;;
       -w|--weeks)
         weeks="$2"
@@ -302,7 +328,7 @@ glyph()
 # msgs
 h_usage()
 {
-  printf "Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>] [-w <weeks>] [-x] [-y] [-d] [-l] [-p] [-D] [-W]\n\n"
+  printf "Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>] [-u <user>] [-w <weeks>] [-x] [-y] [-d] [-l] [-p] [-D] [-W]\n\n"
   return 0
 }
 
@@ -326,6 +352,7 @@ h_args()
   -h | --help                 Displays this help.
   -s | --scheme <name>        Color Scheme
   -g | --glyph <char>         Change Character
+  -u | --user <user>          Show graph for other users
   -w | --weeks <weeks>        Set range of weeks to be displayed
   -x | --xgap                 Remove Gap between each Column
   -y | --ygap                 Put a Gap between each Row
