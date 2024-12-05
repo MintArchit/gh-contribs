@@ -125,7 +125,7 @@ parse_args()
     case "$1" in
       -s|--scheme)
         scheme="$2"
-        [ -z $2 ] && h_glyphs >&2 && exit 1
+        [ -z $2 ] && h_schemes >&2 && exit 1
         shift 2;;
       -g|--glyph)
         glyph="$2"
@@ -373,7 +373,7 @@ h_glyphs()
 
 h_schemes()
 {
-  printf "Schemes:\ngh_contrast vibrant blackAwhite dracula north gold sunset mint\n\n"
+  printf "Schemes:\ngh_original gh_contrast vibrant blackAwhite dracula north gold sunset mint\n\n"
   return 0
 }
 
