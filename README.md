@@ -4,12 +4,11 @@ Render your contribution graph to the terminal.
 
 <img width="745" alt="gif main preview" src="https://raw.githubusercontent.com/MintArchit/gh-contribs/refs/heads/assets/gif/gh-contribs_main-preview_v0.23.9.gif">
 
-
 connects directly via github api / no third party service is used
 
 ## Contents
 
-## ✨ Features 
+## ✨ Features
 
 - [X] other user arg (NEW)
 - [X] Color schemes (NEW)
@@ -20,10 +19,10 @@ connects directly via github api / no third party service is used
 - [X] Automatic Resizing
 - [X] Improved help
 - [X] More control over ouput with gap arguments
-- [X] Doubling █ -> ██ 
+- [X] Doubling █ -> ██
 
 <details>
-	<summary><h4>Todo</h4></summary>
+ <summary><h4>Todo</h4></summary>
 
 - [ ] Configuration file
 - [ ] advanced animations
@@ -37,47 +36,49 @@ connects directly via github api / no third party service is used
 </details>
 
 ## 📦 Installation
- 
-#### install
 
-```
-$ gh extension install mintarchit/gh-contribs
+### install
+
+``` bash
+gh extension install mintarchit/gh-contribs
 ```
 
 <details>
-	<summary><h4>Manage Installation</h4></summary>
+<summary><h3>Manage Installation</h3></summary>
 
 #### list installed extensions
 
-```
-$ gh extension list
+``` bash
+gh extension list
 ```
 
 #### upgrade
 
-```
-$ gh extensions upgrade gh-contribs
+``` bash
+gh extensions upgrade gh-contribs
 ```
 
 #### uninstall
 
+``` bash
+gh extension remove gh-contribs
 ```
-$ gh extension remove gh-contribs
-```
+
 </details>
 
 ## ⚡️ Usage
 
-```
-$ gh contribs
+``` bash
+gh contribs
 ```
 
-#### display help with a list of all possible arguments
+### display help with a list of all possible arguments
 
-```
+``` bash
 gh contribs --help
 ```
-```
+
+``` text
 Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>] [-u <user>] [-w <weeks>] [-x] [-y] [-d] [-l] [-p] [-D] [-W]
 
 Arguments:
@@ -104,7 +105,7 @@ gh_contrast vibrant blackAwhite dracula north gold sunset mint
 
 ## Color Schemes [--scheme \<name\>]
 
-```
+``` text
 Schemes:
 gh_contrast vibrant blackAwhite dracula north gold sunset mint
 ```
@@ -113,10 +114,11 @@ gh_contrast vibrant blackAwhite dracula north gold sunset mint
 
 ## Character Glyphs [--glyph \<glyph\>]
 
-```
+``` text
 Chars:
 square dot fisheye diamond plus block
 ```
+
 <img width="745" alt="gif char preview " src="https://raw.githubusercontent.com/MintArchit/gh-contribs/refs/heads/assets/gif/gh-contribs_char-preview_v0.3.6.gif">
 
 ## Limitations
@@ -127,7 +129,7 @@ Resizing Terminal font-size can temporarily mess up the display of old graph out
 
 All contributions are greatly appreciated!
 
-If you have a suggestion that would make gh-contribs better, 
+If you have a suggestion that would make gh-contribs better,
 please fork the repo and create a pull request or open an issue.
 
 See file [CONTRIBUTION.md](https://github.com/MintArchit/gh-contribs/CONTRIBUTION.md)
