@@ -2,7 +2,7 @@
 
 Render your contribution graph to the terminal.
 
-<img width="745" alt="Screenshot Gif" src="https://github.com/mintarchit/gh-contribs/blob/91bcf0d/gif/gh-contribs_main-preview_v0.23.9.gif">
+<img width="745" alt="gif main preview" src="https://raw.githubusercontent.com/MintArchit/gh-contribs/refs/heads/assets/gif/gh-contribs_main-preview_v0.23.9.gif">
 
 
 connects directly via github api / no third party service is used
@@ -109,7 +109,7 @@ Schemes:
 gh_contrast vibrant blackAwhite dracula north gold sunset mint
 ```
 
-<img width="745" alt="Screenshot scheme gif preview " src="https://github.com/mintarchit/gh-contribs/blob/ba576fc/gif/gh-contribs_scheme-preview_v0.1.0.gif">
+<img width="745" alt="gif scheme preview " src="https://raw.githubusercontent.com/MintArchit/gh-contribs/refs/heads/assets/gif/gh-contribs_scheme-preview_v0.1.0.gif">
 
 ## Character Glyphs [--glyph \<glyph\>]
 
@@ -117,7 +117,7 @@ gh_contrast vibrant blackAwhite dracula north gold sunset mint
 Chars:
 square dot fisheye diamond plus block
 ```
-<img width="745" alt="Screenshot char gif preview " src="https://github.com/mintarchit/gh-contribs/blob/d075d1a/gif/gh-contribs_char-preview_v0.3.6.gif">
+<img width="745" alt="gif char preview " src="https://raw.githubusercontent.com/MintArchit/gh-contribs/refs/heads/assets/gif/gh-contribs_char-preview_v0.3.6.gif">
 
 ## Limitations
 
