@@ -20,8 +20,9 @@ connects directly via github api / no third party service is used
 
 ## ✨ Features
 
-- [X] other user arg (NEW)
-- [X] Color schemes (NEW)
+- [X] contribution count (NEW)
+- [X] other user arg
+- [X] Color schemes
 - [X] Orientation Portrait/Landscape
 - [X] Diffrent Character Glyphs
 - [X] Day labels
@@ -34,14 +35,14 @@ connects directly via github api / no third party service is used
 <details>
  <summary><h4>Todo</h4></summary>
 
+- [ ] months legend
 - [ ] Configuration file
+- [ ] optimize performance
 - [ ] advanced animations
 - [ ] User defined characters(styles)
-- [ ] optimize performance
 - [ ] include update notifier
 - [ ] add version arg
 - [ ] isolated per-repo graph
-- [ ] Show legend, month, and contribution count—separate flags for each
 
 </details>
 
@@ -89,20 +90,21 @@ gh contribs --help
 ```
 
 ``` text
-Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>] [-u <user>] [-w <weeks>] [-x] [-y] [-d] [-l] [-p] [-D] [-W]
+Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>] [-u <user>] [-w <weeks>] [-x] [-y] [-d] [-l] [-t] [-p] [-D] [-W]
 
 Arguments:
 
   -h | --help                 Displays this help.
-  -s | --scheme <name>        Color Scheme
-  -g | --glyph <char>         Change Character
+  -s | --scheme <name>        Color scheme
+  -g | --glyph <char>         Change character
   -u | --user <user>          Show graph for other users
   -w | --weeks <weeks>        Set range of weeks to be displayed
-  -x | --xgap                 Remove Gap between each Column
-  -y | --ygap                 Put a Gap between each Row
-  -d | --double               Enable Doubling Glyph
-  -l | --labels               Enable Labels
-  -p | --portrait             Set Output Orientation
+  -x | --xgap                 Remove gap between each column
+  -y | --ygap                 Put a gap between each row
+  -d | --double               Enable doubling Glyph
+  -l | --labels               Print labels
+  -t | --total                Print total contributions
+  -p | --portrait             Set output orientation
   -D | --Debug                Enable additional debug output
   -W | --Warning              Disable warning output
 
@@ -110,7 +112,7 @@ glyphs:
 square dot fisheye diamond plus block
 
 Schemes:
-gh_contrast vibrant blackAwhite dracula north gold sunset mint
+gh_original gh_contrast vibrant blackAwhite dracula north gold sunset mint
 ```
 
 ## Color Schemes [--scheme \<name\>]
