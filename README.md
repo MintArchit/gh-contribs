@@ -6,6 +6,16 @@ Render your contribution graph to the terminal.
 
 connects directly via github api / no third party service is used
 
+<div align="center">
+
+[![Stargazers][shield_stars]][url_git-remote-stars]
+[![Contributors][shield_contributors]][url_git-remote-contributors]
+[![Forks][shield_forks]][url_git-remote-forks]
+[![Issues][shield_issues]][url_git-remote-issues]
+[![License][shield_license]][url_git-remote-license]
+
+</div>
+
 ## Contents
 
 ## ✨ Features
@@ -132,7 +142,7 @@ All contributions are greatly appreciated!
 If you have a suggestion that would make gh-contribs better,
 please fork the repo and create a pull request or open an issue.
 
-See file [CONTRIBUTION.md](https://github.com/MintArchit/gh-contribs/CONTRIBUTION.md)
+See file [CONTRIBUTION.md][url_git-remote-contributing]
 
 ## Credits
 
@@ -141,3 +151,25 @@ gh-contribs is currently maintained by [MintArchit](https://github.com/MintArchi
 Forked from [Mizlav](https://github.com/mislav)/[gh-contrib](https://github.com/mislav/gh-contrib)
 
 See file [CONTRIBUTORS](https://github.com/MintArchit/gh-contribs/CONTRIBUTORS)
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- [url_git-remote]: https://github.com/MintArchit/gh-contribs
+[url_git-remote-releases]: https://github.com/MintArchit/gh-contribs/releases -->
+[url_git-remote-issues]: https://github.com/MintArchit/gh-contribs/issues
+[url_git-remote-contributors]: https://github.com/MintArchit/gh-contribs/graphs/contributors
+[url_git-remote-forks]: https://github.com/MintArchit/gh-contribs/network/members
+[url_git-remote-stars]: https://github.com/MintArchit/gh-contribs/stargazers
+[url_git-remote-contributing]: docs/CONTRIBUTING.md
+<!-- [url_git-remote-coc]: https://github.com/MintArchit/gh-contribs?tab=coc-ov-file
+[url_git-remote-security-policy]: https://github.com/MintArchit/gh-contribs?tab=security-ov-file#readme -->
+[url_git-remote-license]: https://github.com/MintArchit/gh-contribs/LICENSE.txt
+
+<!-- shields links-->
+[shield_contributors]: https://img.shields.io/github/contributors/MintArchit/gh-contribs.svg?style=for-the-badge
+[shield_forks]: https://img.shields.io/github/forks/MintArchit/gh-contribs.svg?style=for-the-badge&color=purple
+[shield_issues]: https://img.shields.io/github/issues/MintArchit/gh-contribs.svg?style=for-the-badge
+[shield_stars]: https://img.shields.io/github/stars/MintArchit/gh-contribs.svg?style=for-the-badge
+[shield_license]: https://img.shields.io/github/license/MintArchit/gh-contribs.svg?style=for-the-badge&color=black
+
+<!-- image links-->
+<!-- [main-preview]: images/screenshot.png -->
