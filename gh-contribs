@@ -20,6 +20,7 @@ main() {
   # Boolean flags
   portrait=1
   labels=1
+  labelTotalContributions=1
   double=1
   debug=1
   warning=0
@@ -102,50 +103,21 @@ fetch_contributions() {
 parse_args() {
   while [ $# -gt 0 ]; do
     case "$1" in
-      -s|--scheme)
-        scheme="$2"
-        [ -z $2 ] && h_schemes >&2 && exit 1
-        shift 2;;
-      -g|--glyph)
-        glyph="$2"
-        [ -z $2 ] && h_glyphs >&2 && exit 1
-        shift 2;;
-      -u|--user)
-        user="$2"
-        [ -z $2 ] && printf "\nError: no username given\n" >&2 && exit 1
-        shift 2;;
-      -w|--weeks)
-        weeks="$2"
-        weeks_min="$(($weeks_max-weeks))"
-        #let weeks_min=weeks_max-weeks
-        #echo $weeks_min
-        [ -z $2 ] && echo "error" >&2 && exit 1
-        shift 2;;
-      -x|--xgap)
-        xgap=""
-        shift 1;;
-      -y|--ygap)
-        ygap="\n\n"
-        shift 1;;
-      -xy|-yx)
-        xgap=" "
-        ygap="\n\n"
-        shift 1;;
-      -d|--double)    double=0;   shift 1;;
-      -l|--labels)    labels=0;   shift 1;;
-      -p|--portrait)  portrait=0; shift 1;;
-      -D|--Debug)     debug=0;    shift 1;;
-      -W|--Warning)   warning=1;  shift 1;;
-      -h|--help)
-        h_usage >&2
-        h_args >&2
-        h_glyphs >&2
-        h_schemes >&2
-        exit 0;;
-      *)
-        h_usage >&2
-        h_error >&2
-        exit 1;;
+      -x  | --xgap)      xgap="";                                                                                   shift 1;;
+      -y  | --ygap)      ygap="\n\n";                                                                               shift 1;;
+      -d  | --double)    double=0;                                                                                  shift 1;;
+      -l  | --labels)    labels=0;                                                                                  shift 1;;
+      -t  | --total)     labelTotalContributions=0;                                                                 shift 1;;
+      -p  | --portrait)  portrait=0;                                                                                shift 1;;
+      -D  | --Debug)     debug=0;                                                                                   shift 1;;
+      -W  | --Warning)   warning=1;                                                                                 shift 1;;
+      -xy |  -yx)        xgap=" "; ygap="\n\n";                                                                     shift 1;;
+      -s  | --scheme)    scheme="$2";  [ -z $2 ] && h_schemes >&2 && exit 1;                                        shift 2;;
+      -g  | --glyph)     glyph="$2";   [ -z $2 ] && h_glyphs >&2 && exit 1;                                         shift 2;;
+      -u  | --user)      user="$2";    [ -z $2 ] && printf "\nError: no username given\n" >&2 && exit 1;            shift 2;;
+      -w  | --weeks)     weeks="$2";   weeks_min="$(($weeks_max-weeks))"; [ -z $2 ] && echo "error" >&2 && exit 1;  shift 2;;
+      -h  | --help)      h_usage >&2; h_args >&2; h_glyphs >&2; h_schemes >&2;                                       exit 0;;
+      *)                 h_usage >&2; h_error >&2;                                                                   exit 1;;
     esac
   done
   return 0
@@ -197,7 +169,7 @@ render_graph() {
 
 render_graph_landscape() {
   #printf "\nUsed function\n\n"
-  [[ $labels -eq 0 ]] && printf "$totalContributions contributions in the last year\n\n"
+  [[ $labelTotalContributions -eq 0 ]] && printf "$totalContributions contributions in the last year\n\n"
   for d in {0..6}; do
     [[ $labels -eq 0 ]] && printf "%s " "${week_labels[$d]}"
     for ((w = weeks_min; w <= weeks_max; w++)); do
@@ -257,18 +229,12 @@ color_mod() {
   shift
   local scheme=("$@")
   case "$hex" in
-    "${gh_default[0]}")
-      printf "${scheme[0]}";;
-    "${gh_default[1]}")
-      printf "${scheme[1]}";;
-    "${gh_default[2]}")
-      printf "${scheme[2]}";;
-    "${gh_default[3]}")
-      printf "${scheme[3]}";;
-    "${gh_default[4]}")
-      printf "${scheme[4]}";;
-    *)
-      printf "$hex";;
+    "${gh_default[0]}")   printf "${scheme[0]}";;
+    "${gh_default[1]}")   printf "${scheme[1]}";;
+    "${gh_default[2]}")   printf "${scheme[2]}";;
+    "${gh_default[3]}")   printf "${scheme[3]}";;
+    "${gh_default[4]}")   printf "${scheme[4]}";;
+    *)                    printf "$hex";;
   esac
 
   return 0
@@ -288,7 +254,7 @@ glyph() {
 
 # msgs
 h_usage() {
-  printf "Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>] [-u <user>] [-w <weeks>] [-x] [-y] [-d] [-l] [-p] [-D] [-W]\n\n"
+  printf "Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>] [-u <user>] [-w <weeks>] [-x] [-y] [-d] [-l] [-t] [-p] [-D] [-W]\n\n"
   return 0
 }
 
@@ -307,15 +273,16 @@ h_args() {
   printf "Arguments:
 
   -h | --help                 Displays this help.
-  -s | --scheme <name>        Color Scheme
-  -g | --glyph <char>         Change Character
+  -s | --scheme <name>        Color scheme
+  -g | --glyph <char>         Change character
   -u | --user <user>          Show graph for other users
   -w | --weeks <weeks>        Set range of weeks to be displayed
-  -x | --xgap                 Remove Gap between each Column
-  -y | --ygap                 Put a Gap between each Row
-  -d | --double               Enable Doubling Glyph
-  -l | --labels               Enable Labels
-  -p | --portrait             Set Output Orientation
+  -x | --xgap                 Remove gap between each column
+  -y | --ygap                 Put a gap between each row
+  -d | --double               Enable doubling Glyph
+  -l | --labels               Print labels
+  -t | --total                Print total contributions
+  -p | --portrait             Set output orientation
   -D | --Debug                Enable additional debug output
   -W | --Warning              Disable warning output
   \n"
