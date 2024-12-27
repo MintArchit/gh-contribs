@@ -6,7 +6,7 @@ Render your contribution graph to the terminal.
 
 connects directly via github api / no third party service is used
 
-<div align="center">
+<div align="left">
 
 [![Stargazers][shield_stars]][url_git-remote-stars]
 [![Contributors][shield_contributors]][url_git-remote-contributors]
