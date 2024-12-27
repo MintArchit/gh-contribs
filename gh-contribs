@@ -76,7 +76,7 @@ main() {
     [ $warning -eq 0 ] && printf "exceeding terminal_width, resizing to $weeks weeks\n"
   fi
   
-  [ $double -eq 0 ] && print_graph 1 || print_graph 0
+  [ $double -eq 0 ] && render_graph 1 || render_graph 0
 
   [ $debug -eq 0 ] && printf "weeks: $weeks, w-min: $weeks_min, w-max: $weeks_max \n"
   return 0
@@ -85,12 +85,18 @@ main() {
 fetch_contributions() {
   local query
   if [[ -z "$user" ]]; then
-    query='{ viewer { contributionsCollection { contributionCalendar { weeks { contributionDays { color } } } } } }'
-    days=( $(gh api graphql -f query="$query" --jq '..|.color?' | grep .) )
+    query='{ viewer { contributionsCollection { contributionCalendar { totalContributions weeks { contributionDays { color } } } } } }'
+    result=$(gh api graphql -f query="$query")
   else
-    query='query($user: String!) { user(login: $user) { contributionsCollection { contributionCalendar { weeks { contributionDays { color } } } } } }'
-    days=( $(gh api graphql -F "user=$user" -f query="$query" --jq '..|.color?' | grep .) )
+    query='query($user: String!) { user(login: $user) { contributionsCollection { contributionCalendar { totalContributions weeks { contributionDays { color } } } } } }'
+    result=$(gh api graphql -F "user=$user" -f query="$query")
   fi
+  
+  # Extract totalContributions
+  totalContributions=$(echo "$result" | grep -o '"totalContributions":[0-9]*' | grep -o '[0-9]*')
+
+  # Extract all colors (hex codes) into an array
+  readarray -t days < <(echo "$result" | grep -o '"color":"#[a-fA-F0-9]*"' | grep -o '#[a-fA-F0-9]*')
 }
 
 parse_args() {
@@ -180,21 +186,22 @@ parse_scheme() {
   return 0
 }
 
-print_graph() {
+render_graph() {
   if [[ $portrait -eq 0 ]]; then
-    print_graph_portrait $1
+    render_graph_portrait $1
   else
-    print_graph_landscape $1
+    render_graph_landscape $1
   fi
   return 0
 }
 
-print_graph_landscape() {
+render_graph_landscape() {
   #printf "\nUsed function\n\n"
+  [[ $labels -eq 0 ]] && printf "$totalContributions contributions in the last year\n\n"
   for d in {0..6}; do
     [[ $labels -eq 0 ]] && printf "%s " "${week_labels[$d]}"
-    for w in $(seq $weeks_min $weeks_max); do
-      print_graph_cmd $1
+    for ((w = weeks_min; w <= weeks_max; w++)); do
+      print_cell $1
     done
     printf "$ygap"
   done
@@ -202,11 +209,11 @@ print_graph_landscape() {
   return 0
 }
 
-print_graph_portrait() {
+render_graph_portrait() {
   #printf "\nUsed function\n\n"
-  for w in $(seq $weeks_min $weeks_max); do
+  for ((w = weeks_min; w <= weeks_max; w++)); do
     for d in {0..6}; do
-      print_graph_cmd $1
+      print_cell $1
     done
     printf "$ygap"
   done
@@ -215,7 +222,7 @@ print_graph_portrait() {
   return 0
 }
 
-print_graph_cmd() {
+print_cell() {
   # hex = "#xxyyzz"
   hex="${days[w*7+d]}"
   [ "$debug" -eq 0 ] && printf "before: $hex"
