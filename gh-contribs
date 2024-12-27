@@ -4,23 +4,23 @@ set -e    #exit on error for each command
 #set -x
 #trap read debug
 
-main()
-{
+main() {
   # global variables
   current_glyphacter_empty=0
   weeks_max=52
   weeks_min=0
-  weeks="$(($weeks_max-weeks_min))"
+  weeks=$((weeks_max-weeks_min))
   week_labels=("Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat")
-  glyph=square
+  glyph="square"
   xgap=" "
   ygap="\n"
-  #user="tonsky"
   user=""
+  # user="tonsky"
 
-  # boolean
+  # Boolean flags
   portrait=1
   labels=1
+  labelTotalContributions=1
   double=1
   debug=1
   warning=0
@@ -35,16 +35,15 @@ main()
   scheme_mint=("#333333" "#5AFEAD" "#21B475" "#1D794B" "#294B36")
   scheme="gh_contrast"
 
-  #echo "main is running"
+
   parse_args "$@"
-  #echo "p_args is running"
   parse_glyph
-  #echo "p_glyph is running"
   parse_scheme
+  fetch_contributions
 
   # local variables
-  local output_width="$(calculate_output_width $weeks)"
-  local terminal_width="$(tput cols)"
+  terminal_width=$(tput cols)
+  output_width=$(calculate_output_width "$weeks")
   
   local wdouble=1
   local wlabel=0
@@ -60,42 +59,6 @@ main()
   ((weeks*(wdouble+wxgap)+wlabel+2))
   \n"
 
-
-  # gh api
-  if [[ -z "$user" ]]; then
-    days=( $(gh api graphql -f query='{
-      viewer {
-        contributionsCollection {
-          contributionCalendar {
-            weeks {
-              contributionDays {
-                color
-              }
-            }
-          }
-        }
-      }
-    }' --jq '..|.color?' | grep .) )
-  else
-    days=( $(gh api graphql -F "user=$user" -f query='query($user:String!) {
-      user(login: $user) 
-      {
-        contributionsCollection 
-        {
-          contributionCalendar 
-          {
-            weeks 
-            {
-              contributionDays 
-              {
-                color
-              }
-            }
-          }
-        }
-      }
-    }' --jq '..|.color?' | grep .) )
-  fi
 
   [ $debug -eq 0 ] && printf "terminal: $terminal_width, calculated-output: $output_width\n"
 
@@ -113,77 +76,54 @@ main()
     weeks_min="$((weeks_max-weeks))"
     [ $warning -eq 0 ] && printf "exceeding terminal_width, resizing to $weeks weeks\n"
   fi
-  [ $double -eq 0 ] && print_graph 1 || print_graph 0
+  
+  [ $double -eq 0 ] && render_graph 1 || render_graph 0
 
   [ $debug -eq 0 ] && printf "weeks: $weeks, w-min: $weeks_min, w-max: $weeks_max \n"
   return 0
 }
 
-parse_args()
-{
+fetch_contributions() {
+  local query
+  if [[ -z "$user" ]]; then
+    query='{ viewer { contributionsCollection { contributionCalendar { totalContributions weeks { contributionDays { color } } } } } }'
+    result=$(gh api graphql -f query="$query")
+  else
+    query='query($user: String!) { user(login: $user) { contributionsCollection { contributionCalendar { totalContributions weeks { contributionDays { color } } } } } }'
+    result=$(gh api graphql -F "user=$user" -f query="$query")
+  fi
+  
+  # Extract totalContributions
+  totalContributions=$(echo "$result" | grep -o '"totalContributions":[0-9]*' | grep -o '[0-9]*')
+
+  # Extract all colors (hex codes) into an array
+  readarray -t days < <(echo "$result" | grep -o '"color":"#[a-fA-F0-9]*"' | grep -o '#[a-fA-F0-9]*')
+}
+
+parse_args() {
   while [ $# -gt 0 ]; do
     case "$1" in
-      -s|--scheme)
-        scheme="$2"
-        [ -z $2 ] && h_schemes >&2 && exit 1
-        shift 2;;
-      -g|--glyph)
-        glyph="$2"
-        [ -z $2 ] && h_glyphs >&2 && exit 1
-        shift 2;;
-      -u|--user)
-        user="$2"
-        [ -z $2 ] && printf "\nError: no username given\n" >&2 && exit 1
-        shift 2;;
-      -w|--weeks)
-        weeks="$2"
-        weeks_min="$(($weeks_max-weeks))"
-        #let weeks_min=weeks_max-weeks
-        #echo $weeks_min
-        [ -z $2 ] && echo "error" >&2 && exit 1
-        shift 2;;
-      -x|--xgap)
-        xgap=""
-        shift 1;;
-      -y|--ygap)
-        ygap="\n\n"
-        shift 1;;
-      -xy|-yx)
-        xgap=" "
-        ygap="\n\n"
-        shift 1;;
-      -d|--double)
-        double=0
-        shift 1;;
-      -l|--labels)
-        labels=0
-        shift 1;;
-      -p|--portrait)
-        portrait=0
-        shift 1;;
-      -D|--Debug)
-        debug=0
-        shift 1;;
-      -W|--Warning)
-        warning=1
-        shift 1;;
-      -h|--help)
-        h_usage >&2
-        h_args >&2
-        h_glyphs >&2
-        h_schemes >&2
-        exit 0;;
-      *)
-        h_usage >&2
-        h_error >&2
-        exit 1;;
+      -x  | --xgap)      xgap="";                                                                                   shift 1;;
+      -y  | --ygap)      ygap="\n\n";                                                                               shift 1;;
+      -d  | --double)    double=0;                                                                                  shift 1;;
+      -l  | --labels)    labels=0;                                                                                  shift 1;;
+      -t  | --total)     labelTotalContributions=0;                                                                 shift 1;;
+      -p  | --portrait)  portrait=0;                                                                                shift 1;;
+      -D  | --Debug)     debug=0;                                                                                   shift 1;;
+      -W  | --Warning)   warning=1;                                                                                 shift 1;;
+      -xy |  -yx)        xgap=" "; ygap="\n\n";                                                                     shift 1;;
+      -s  | --scheme)    scheme="$2";  [ -z $2 ] && h_schemes >&2 && exit 1;                                        shift 2;;
+      -g  | --glyph)     glyph="$2";   [ -z $2 ] && h_glyphs >&2 && exit 1;                                         shift 2;;
+      -u  | --user)      user="$2";    [ -z $2 ] && printf "\nError: no username given\n" >&2 && exit 1;            shift 2;;
+      -w  | --weeks)     weeks="$2";   weeks_min="$(($weeks_max-weeks))"; [ -z $2 ] && echo "error" >&2 && exit 1;  shift 2;;
+      -h  | --help)      h_usage >&2; h_args >&2; h_glyphs >&2; h_schemes >&2;                                       exit 0;;
+      *)                 h_usage >&2; h_error >&2;                                                                   exit 1;;
     esac
   done
   return 0
 }
 
-parse_glyph()
-{
+parse_glyph() {
   case "$glyph" in
     block)
       block_full="█"
@@ -211,31 +151,29 @@ parse_glyph()
   return 0
 }
 
-parse_scheme()
-{
+parse_scheme() {
   local var=$scheme[@]
   eval current_scheme=\${scheme_${scheme}[@]}
   [ -z "$current_scheme" ] && eval 'echo "error: scheme '$scheme' not recognized" >&2;h_schemes >&2;exit 1;'
   return 0
 }
 
-print_graph()
-{
+render_graph() {
   if [[ $portrait -eq 0 ]]; then
-    print_graph_portrait $1
+    render_graph_portrait $1
   else
-    print_graph_landscape $1
+    render_graph_landscape $1
   fi
   return 0
 }
 
-print_graph_landscape()
-{
+render_graph_landscape() {
   #printf "\nUsed function\n\n"
-  for d in $(seq 0 6); do
-    [ $labels -eq 0 ] && printf "%s${week_labels[$d]} "
-    for w in $(seq $weeks_min $weeks_max); do
-      print_graph_cmd $1
+  [[ $labelTotalContributions -eq 0 ]] && printf "$totalContributions contributions in the last year\n\n"
+  for d in {0..6}; do
+    [[ $labels -eq 0 ]] && printf "%s " "${week_labels[$d]}"
+    for ((w = weeks_min; w <= weeks_max; w++)); do
+      print_cell $1
     done
     printf "$ygap"
   done
@@ -243,12 +181,11 @@ print_graph_landscape()
   return 0
 }
 
-print_graph_portrait()
-{
+render_graph_portrait() {
   #printf "\nUsed function\n\n"
-  for w in $(seq $weeks_min $weeks_max); do
-    for d in $(seq 0 6); do
-      print_graph_cmd $1
+  for ((w = weeks_min; w <= weeks_max; w++)); do
+    for d in {0..6}; do
+      print_cell $1
     done
     printf "$ygap"
   done
@@ -257,8 +194,7 @@ print_graph_portrait()
   return 0
 }
 
-print_graph_cmd()
-{
+print_cell() {
   # hex = "#xxyyzz"
   hex="${days[w*7+d]}"
   [ "$debug" -eq 0 ] && printf "before: $hex"
@@ -272,8 +208,7 @@ print_graph_cmd()
   return 0
 }
 
-calculate_output_width()
-{
+calculate_output_width() {
   #calclogic
   #x=weeks*(wdouble+wxgaps)+wlabel+2
   #(x-2-wlabel)/(wdouble+wxgaps)=weeks
@@ -288,32 +223,24 @@ calculate_output_width()
   return 0
 }
 
-color_mod()
-{
+color_mod() {
   local gh_default=("#ebedf0" "#9be9a8" "#40c463" "#30a14e" "#216e39")
   local hex="$1"
   shift
   local scheme=("$@")
   case "$hex" in
-    "${gh_default[0]}")
-      printf "${scheme[0]}";;
-    "${gh_default[1]}")
-      printf "${scheme[1]}";;
-    "${gh_default[2]}")
-      printf "${scheme[2]}";;
-    "${gh_default[3]}")
-      printf "${scheme[3]}";;
-    "${gh_default[4]}")
-      printf "${scheme[4]}";;
-    *)
-      printf "$hex";;
+    "${gh_default[0]}")   printf "${scheme[0]}";;
+    "${gh_default[1]}")   printf "${scheme[1]}";;
+    "${gh_default[2]}")   printf "${scheme[2]}";;
+    "${gh_default[3]}")   printf "${scheme[3]}";;
+    "${gh_default[4]}")   printf "${scheme[4]}";;
+    *)                    printf "$hex";;
   esac
 
   return 0
 }
 
-glyph()
-{
+glyph() {
   local hex="$1"
   local scheme="$2"
   if [ "$hex" = "${scheme[0]}" ]; then
@@ -326,59 +253,53 @@ glyph()
 }
 
 # msgs
-h_usage()
-{
-  printf "Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>] [-u <user>] [-w <weeks>] [-x] [-y] [-d] [-l] [-p] [-D] [-W]\n\n"
+h_usage() {
+  printf "Usage: gh contribs [-h] [-s <scheme>] [-g <glyph>] [-u <user>] [-w <weeks>] [-x] [-y] [-d] [-l] [-t] [-p] [-D] [-W]\n\n"
   return 0
 }
 
-h_error()
-{
+h_error() {
   printf "Error: Invalid input!\n\n"
   return 0
 }
 
-h_warning()
-{
+h_warning() {
   printf "Warning: Terminal too thin, (-x --xgap) ignored!\n"
   return 0
 }
 
 #-c | --config <path/to/cfg> Specify Config
-h_args()
-{
+h_args() {
   printf "Arguments:
 
   -h | --help                 Displays this help.
-  -s | --scheme <name>        Color Scheme
-  -g | --glyph <char>         Change Character
+  -s | --scheme <name>        Color scheme
+  -g | --glyph <char>         Change character
   -u | --user <user>          Show graph for other users
   -w | --weeks <weeks>        Set range of weeks to be displayed
-  -x | --xgap                 Remove Gap between each Column
-  -y | --ygap                 Put a Gap between each Row
-  -d | --double               Enable Doubling Glyph
-  -l | --labels               Enable Labels
-  -p | --portrait             Set Output Orientation
+  -x | --xgap                 Remove gap between each column
+  -y | --ygap                 Put a gap between each row
+  -d | --double               Enable doubling Glyph
+  -l | --labels               Print labels
+  -t | --total                Print total contributions
+  -p | --portrait             Set output orientation
   -D | --Debug                Enable additional debug output
   -W | --Warning              Disable warning output
   \n"
   return 0
 }
 
-h_glyphs()
-{
+h_glyphs() {
   printf "glyphs:\nsquare dot fisheye diamond plus block\n\n"
   return 0
 }
 
-h_schemes()
-{
+h_schemes() {
   printf "Schemes:\ngh_original gh_contrast vibrant blackAwhite dracula north gold sunset mint\n\n"
   return 0
 }
 
-h_files()
-{
+h_files() {
   printf "Files:\n~/.config/gh-contribs/init.cfg\n\n"
   return 0
 }
