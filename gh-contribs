@@ -5,6 +5,10 @@ set -e    #exit on error for each command
 #trap read debug
 
 main() {
+  measure_execution_time exec_code "$@"
+}
+
+exec_code() {
   # global variables
   current_glyphacter_empty=0
   weeks_max=52
@@ -80,6 +84,22 @@ main() {
   [ $double -eq 0 ] && render_graph 1 || render_graph 0
 
   [ $debug -eq 0 ] && printf "weeks: $weeks, w-min: $weeks_min, w-max: $weeks_max \n"
+  return 0
+
+}
+
+calculate_output_width() {
+  #calclogic
+  #x=weeks*(wdouble+wxgaps)+wlabel+2
+  #(x-2-wlabel)/(wdouble+wxgaps)=weeks
+  local wdouble=1
+  local wlabel=0
+  local wxgap=1
+  [ $double -eq 0 ] && wdouble=2
+  [ $labels -eq 0 ] && wlabel=4
+  [ -z "$xgap" ] && wxgap=0
+  #printf "$(($1*(wdouble+wxgap)+wlabel+2))"
+  printf "$(($1*(wdouble+wxgap)+wlabel+wdouble+wgap))"
   return 0
 }
 
@@ -208,21 +228,6 @@ print_cell() {
   return 0
 }
 
-calculate_output_width() {
-  #calclogic
-  #x=weeks*(wdouble+wxgaps)+wlabel+2
-  #(x-2-wlabel)/(wdouble+wxgaps)=weeks
-  local wdouble=1
-  local wlabel=0
-  local wxgap=1
-  [ $double -eq 0 ] && wdouble=2
-  [ $labels -eq 0 ] && wlabel=4
-  [ -z "$xgap" ] && wxgap=0
-  #printf "$(($1*(wdouble+wxgap)+wlabel+2))"
-  printf "$(($1*(wdouble+wxgap)+wlabel+wdouble+wgap))"
-  return 0
-}
-
 color_mod() {
   local gh_default=("#ebedf0" "#9be9a8" "#40c463" "#30a14e" "#216e39")
   local hex="$1"
@@ -250,6 +255,14 @@ glyph() {
   fi
 
   return 0
+}
+
+measure_execution_time() {
+  local start_time=$(date +%s%3N)
+  "$@"
+  local end_time=$(date +%s%3N)
+  local duration=$((end_time - start_time))
+  printf "Execution of '%s' took %d.%03d seconds\n" "$*" $((duration / 1000)) $((duration % 1000))
 }
 
 # msgs
